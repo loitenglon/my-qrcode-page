@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>八大造岩礦物未知標本排查終端</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --panel-bg: #1e293b;
+      --card-bg: #334155;
+      --accent-cyan: #06b6d4;
+      --accent-gold: #f59e0b;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #475569;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      -webkit-tap-highlight-color: rgba(6, 182, 212, 0.2);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* iOS 診斷指示器 */
+    #ios-status-bar {
+      background: #451a03;
+      color: #fde68a;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      text-align: center;
+      border: 1px solid #b45309;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .title-group h1 {
+      font-size: 1.35rem;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-badge {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .score-badge span b {
+      color: var(--accent-gold);
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 300px;
+      gap: 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 960px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 6px;
+    }
+
+    .specimen-display {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 12px;
+      border: 2px dashed var(--accent-cyan);
+    }
+
+    .specimen-code {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      margin: 8px 0;
+    }
+
+    .specimen-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      text-align: left;
+      background: rgba(0,0,0,0.25);
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 500;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      background: #475569;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      border-color: #0ea5e9;
+    }
+
+    .btn-gold {
+      background: #d97706;
+      border-color: #f59e0b;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tool-btn {
+      padding: 12px 10px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      background: #24344d;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .tool-btn b {
+      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .tool-btn span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .log-container {
+      flex: 1;
+      background: #0b1120;
+      border-radius: 8px;
+      padding: 12px;
+      overflow-y: auto;
+      border: 1px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 180px;
+      max-height: 380px;
+    }
+
+    .log-item {
+      background: #1e293b;
+      border-left: 4px solid var(--accent-cyan);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+
+    .log-item.gold { border-left-color: var(--accent-gold); }
+    .log-item.green { border-left-color: var(--accent-green); }
+
+    .log-title {
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: var(--accent-cyan);
+    }
+
+    .log-detail {
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .log-clue {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #334155;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .result-card {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      display: none;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    .result-card.success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--accent-green);
+      color: #6ee7b7;
+    }
+
+    .result-card.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--accent-red);
+      color: #fca5a5;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      max-width: 760px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 18px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .tree-box {
+      background: #0b1120;
+      border: 1px solid #334155;
+      padding: 14px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #93c5fd;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- iPad 運行狀態指示器 -->
+  <div id="ios-status-bar">
+    ⚠️ 偵測中：若此處未轉變為綠色「系統已就緒」，請勿直接在「檔案」預覽中點擊，請長按檔案點「分享」並選擇「Safari」開啟！
+  </div>
+
+  <header>
+    <div class="title-group">
+      <h1>🔬 八大造岩礦物未知標本排查終端</h1>
+    </div>
+    <div class="score-badge">
+      <span>已破案: <b id="solved-count">0</b></span>
+      <span>連勝: <b id="streak-count">0</b></span>
+      <button type="button" class="btn btn-gold" id="btn-open-guide" style="padding:4px 10px; font-size:0.75rem;">📖 排查秘籍</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Left Panel -->
+    <div class="panel">
+      <div class="panel-title">📦 當前盲盒標本</div>
+      <div class="specimen-display">
+        <div style="font-size:0.75rem; color:var(--text-muted);">未知地下岩芯樣品</div>
+        <div class="specimen-code" id="sample-id">#SP-01</div>
+        <div class="specimen-desc" id="sample-initial-desc">載入中...</div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="btn-draw" style="width:100%; margin-bottom:12px;">
+        🎲 抽取新盲盒標本
+      </button>
+
+      <div style="font-size:0.75rem; color:var(--text-muted); line-height:1.45; margin-top:auto; background:rgba(0,0,0,0.2); padding:8px; border-radius:6px;">
+        <b>地質偵探破案規範：</b><br>
+        1. 優先使用無損/微損物理工具。<br>
+        2. 劃線擦拭確認真傷痕，非表面粉末。<br>
+        3. 結合斷裂機制與酸性反應綜合推斷。
+      </div>
+    </div>
+
+    <!-- Center Panel -->
+    <div class="panel">
+      <div class="panel-title">🛠️ 實驗破案工具台（點擊調用測試）</div>
+      
+      <div class="tools-grid">
+        <button type="button" class="btn tool-btn" data-tool="glass">
+          <b>🪟 劃刻玻璃板</b>
+          <span>測試硬度是否 ≥ 5.5（硬漢組初篩）</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="hcl">
+          <b>🧪 滴 5% 稀鹽酸</b>
+          <span>檢測碳酸根化學分解反應</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="streak">
+          <b>⚪ 無釉白瓷板條痕</b>
+          <span>刮磨粉末消除表面干擾，測定固有色</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="lens">
+          <b>🔍 高倍手持放大鏡</b>
+          <span>觀察平整階梯解理面 vs 貝殼狀弧紋斷口</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="fingernail" style="grid-column: span 2;">
+          <b>🖐️ 指甲 / 銅幣刻劃刻度</b>
+          <span>針對軟質組細篩：指甲(~2.5) 與 銅幣(~3.5)</span>
+        </button>
+      </div>
+
+      <div class="panel-title" style="margin-top:6px;">📋 即時觀測記錄與物理現象日誌</div>
+      <div class="log-container" id="test-logs">
+        <div style="color:var(--text-muted); font-size:0.8rem; text-align:center; padding:15px;">
+          請點選工具對樣品進行測試，實驗觀測現象將客觀呈現在此處。
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="panel">
+      <div class="panel-title">📝 地質偵探結案鑑定書</div>
+      
+      <div class="form-group">
+        <label>候選礦物最終定名推斷：</label>
+        <select id="guess-mineral">
+          <option value="">-- 請選擇鎖定的礦物 --</option>
+          <option value="石英">石英 (Quartz)</option>
+          <option value="長石">長石 (Feldspar)</option>
+          <option value="方解石">方解石 (Calcite)</option>
+          <option value="黑雲母">黑雲母 / 白雲母 (Mica)</option>
+          <option value="黃鐵礦">黃鐵礦 (Pyrite)</option>
+          <option value="赤鐵礦">赤鐵礦 (Hematite)</option>
+          <option value="螢石">螢石 (Fluorite)</option>
+          <option value="石膏">石膏 (Gypsum)</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="btn-submit" style="width:100%; margin-top:8px;">
+        ⚖️ 提交判定並答辯
+      </button>
+
+      <div id="result-box" class="result-card"></div>
+    </div>
+  </div>
+
+  <!-- Modal Reference -->
+  <div class="modal-overlay" id="guide-modal">
+    <div class="modal-content" id="modal-content">
+      <div class="modal-header">
+        <h2 style="color:var(--accent-cyan); font-size:1.05rem;">📖 八大造岩礦物三級排查邏輯秘籍</h2>
+        <button type="button" class="btn" id="btn-close-guide" style="padding:4px 10px;">關閉</button>
+      </div>
+      <div class="tree-box">
+【第一道門檻：玻璃板刻劃測試 (分水嶺 5.5)】
+  │
+  ├── 🟢 能劃傷玻璃板 (硬度 ≥ 5.5 硬漢組)
+  │     ├── 斷面為弧形貝殼狀斷口，無解理反光，油脂/玻璃光澤 ──→ 【石英 Quartz (硬度 7)】
+  │     ├── 具兩組近90°完全解理，階梯狀反光，肉紅或白 ────────→ 【長石 Feldspar (硬度 6)】
+  │     └── 具強金屬光澤，條痕綠黑/褐黑 ─────────────────────────→ 【黃鐵礦 Pyrite (硬度 6-6.5)】
+  │
+  └── 🔵 劃不動玻璃板 (硬度 &lt; 5.5 軟質組)
+        ├── 滴入 5% 稀鹽酸瞬間劇烈沸騰冒泡 ───────────────────→ 【方解石 Calcite (硬度 3)】
+        ├── 條痕呈櫻桃紅/紅棕色，暗金屬黑或鐵灰色 ─────────────→ 【赤鐵礦 Hematite (硬度 5-6)】
+        ├── 玻璃光澤，常呈紫/綠立方體，鋼刀可刻劃，指甲劃不動 ─→ 【螢石 Fluorite (硬度 4)】
+        └── 極軟組 (指甲能輕易刻劃，硬度 ≤ 2.5)
+              ├── 能撕成透明有彈性的片狀薄頁 ──────────────────→ 【黑/白雲母 Mica (硬度 2.5)】
+              └── 白色細膩，質軟如粉筆，摸起來有滑感 ──────────→ 【石膏 Gypsum (硬度 2)】
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 立即向指示條報告 JS 已啟動
+    (function checkJS() {
+      var bar = document.getElementById("ios-status-bar");
+      if (bar) {
+        bar.style.background = "#064e3b";
+        bar.style.color = "#6ee7b7";
+        bar.style.borderColor = "#059669";
+        bar.innerHTML = "✅ iPad 瀏覽器環境正常，互動腳本已成功載入！";
+      }
+    })();
+
+    var mineralDB = [
+      {
+        name: "石英",
+        en: "Quartz",
+        initialDesc: "無色半透明或乳白塊狀，光線透過時呈現微弱油脂感，邊緣有破裂弧面。",
+        hardness: 7,
+        canScratchGlass: true,
+        acidReaction: false,
+        streak: "白色 / 無色粉末",
+        lensObs: "表面看不到任何平整的階梯解理面，呈現類似碎啤酒瓶底的平滑同心圓弧紋（貝殼狀斷口）。",
+        nailScratch: false,
+        deduction: "硬度高達 7 能輕易刻劃玻璃；具備標誌性的『貝殼狀斷口』且完全不具備平整解理；滴酸無氣泡反應。"
+      },
+      {
+        name: "長石",
+        en: "Feldspar",
+        initialDesc: "微帶肉紅色或灰白色，質地緻密，手感堅硬，轉動時某些表面有反光。",
+        hardness: 6,
+        canScratchGlass: true,
+        acidReaction: false,
+        streak: "白色粉末",
+        lensObs: "可見兩組相互垂直（近 90°）的平整解理面，轉動角度時出現大面積平整閃亮的反光台階。",
+        nailScratch: false,
+        deduction: "能刻劃玻璃（硬度 6）；轉動反光可見兩組近 90° 的階梯狀平整解理面，排除貝殼狀斷口的石英。"
+      },
+      {
+        name: "方解石",
+        en: "Calcite",
+        initialDesc: "無色透明至乳白，幾何外形略顯傾斜，表面似乎有平行的紋理痕跡。",
+        hardness: 3,
+        canScratchGlass: false,
+        acidReaction: true,
+        streak: "白色粉末",
+        lensObs: "具備三組極發育的完全解理，破裂碎片呈現整齊平行的菱面體幾何外形。",
+        nailScratch: false,
+        deduction: "劃不動玻璃，銅幣可劃傷（硬度 3）；破裂面呈完美菱面體；滴入冷稀鹽酸瞬間劇烈起泡放出 CO₂。"
+      },
+      {
+        name: "黑雲母",
+        en: "Biotite Mica",
+        initialDesc: "深褐色至墨黑色片狀集合體，邊緣隱約可見一層層非常薄的堆疊構造。",
+        hardness: 2.5,
+        canScratchGlass: false,
+        acidReaction: false,
+        streak: "淺灰褐色或近白色粉末",
+        lensObs: "具備一組極完全解理，層狀疊置如書頁，極其容易沿著平行面剝離分開。",
+        nailScratch: true,
+        deduction: "極軟，指甲能輕易劃傷（硬度 ≤ 2.5）；具備單向極完全解理，能揭下薄如蟬翼且具彈性的深色薄片。"
+      },
+      {
+        name: "黃鐵礦",
+        en: "Pyrite",
+        initialDesc: "表面金燦燦，散發耀眼金屬光澤，晶體呈現微小立方體外形，手感沉重。",
+        hardness: 6.5,
+        canScratchGlass: true,
+        acidReaction: false,
+        streak: "墨綠色至褐黑色粉末（非金黃色）",
+        lensObs: "強金屬光澤，立方體晶面上隱約可見平行的微細條紋；斷口參差不平，無解理面。",
+        nailScratch: false,
+        deduction: "外表金黃，但硬度超過 6 能割傷玻璃，且在瓷板上劃出綠黑色的粉末條痕，徹底戳穿愚人金偽裝。"
+      },
+      {
+        name: "赤鐵礦",
+        en: "Hematite",
+        initialDesc: "外觀呈沉重的鋼灰色至暗黑鐵色，略帶微弱暗金屬光澤，摸起來稍有粗糙感。",
+        hardness: 5.5,
+        canScratchGlass: false,
+        acidReaction: false,
+        streak: "鮮明的櫻桃紅色至紅棕色粉末",
+        lensObs: "表面呈隱晶狀或細鱗片狀聚集，局部可見腎狀突起，敲擊斷面無規則平整面。",
+        nailScratch: false,
+        deduction: "外表呈冷鐵黑色，但在未上釉瓷板上永遠留下一道鮮明的櫻桃紅至紅棕色條痕；酸測試不反應。"
+      },
+      {
+        name: "螢石",
+        en: "Fluorite",
+        initialDesc: "半透明，帶有淡淡的翠綠或紫藍色調，具有清澈的玻璃光澤，棱角分明。",
+        hardness: 4,
+        canScratchGlass: false,
+        acidReaction: false,
+        streak: "白色粉末",
+        lensObs: "可見四組完全解理，破裂時常常形成三角形或八面體的小碎片，表面反光清亮。",
+        nailScratch: false,
+        deduction: "劃不動玻璃但鋼刀可刻劃（硬度 4），指甲劃不動；玻璃光澤，具八面體幾何解理，滴酸無反應。"
+      },
+      {
+        name: "石膏",
+        en: "Gypsum",
+        initialDesc: "雪白色或半透明纖維狀塊體，質地十分細膩，拿在手上感覺非常輕盈。",
+        hardness: 2,
+        canScratchGlass: false,
+        acidReaction: false,
+        streak: "純白色粉末",
+        lensObs: "晶體微細，質地鬆軟，輕輕劃動即可產生大量白色細粉，沒有堅硬的刻痕邊緣。",
+        nailScratch: true,
+        deduction: "莫氏硬度僅為 2，指甲能極其輕鬆地在表面刻出白溝；手感細膩滑潤，滴酸不起泡。"
+      }
+    ];
+
+    var currentSample = null;
+    var solvedCount = 0;
+    var streakCount = 0;
+
+    function drawNewSample() {
+      var randomIndex = Math.floor(Math.random() * mineralDB.length);
+      currentSample = mineralDB[randomIndex];
+
+      var randomCode = "SP-" + Math.floor(10 + Math.random() * 90);
+      document.getElementById("sample-id").innerText = "#" + randomCode;
+      document.getElementById("sample-initial-desc").innerText = currentSample.initialDesc;
+      
+      var logContainer = document.getElementById("test-logs");
+      logContainer.innerHTML = '<div class="log-item">' +
+        '<div class="log-title">系統提示</div>' +
+        '<div class="log-detail">已成功裝載未知地下樣品 <b>#' + randomCode + '</b>。請點選工具台進行物理/化學性質檢測。</div>' +
+      '</div>';
+
+      document.getElementById("guess-mineral").value = "";
+      var resBox = document.getElementById("result-box");
+      resBox.style.display = "none";
+      resBox.className = "result-card";
+    }
+
+    function applyTool(toolType) {
+      if (!currentSample) {
+        drawNewSample();
+      }
+
+      var logContainer = document.getElementById("test-logs");
+      var item = document.createElement("div");
+      item.className = "log-item";
+
+      switch(toolType) {
+        case "glass":
+          if (currentSample.canScratchGlass) {
+            item.classList.add("gold");
+            item.innerHTML = '<div class="log-title">🪟 玻璃板刻劃測試</div>' +
+              '<div class="log-detail">樣品棱角在玻璃表面劃動，擦拭去表面粉末後，<b>玻璃板留下了一條清晰且無法抹去的永久凹痕</b>。</div>' +
+              '<div class="log-clue">物理現象：樣品硬度 ≥ 5.5（大於普通玻璃板刻度基準）</div>';
+          } else {
+            item.innerHTML = '<div class="log-title">🪟 玻璃板刻劃測試</div>' +
+              '<div class="log-detail">樣品在玻璃表面打滑，擦拭後<b>玻璃板表面平整光滑、毫無損傷</b>，樣品自身邊角反被磨損。</div>' +
+              '<div class="log-clue">物理現象：樣品硬度 &lt; 5.5（小於普通玻璃板刻度基準）</div>';
+          }
+          break;
+
+        case "hcl":
+          if (currentSample.acidReaction) {
+            item.classList.add("green");
+            item.innerHTML = '<div class="log-title">🧪 5% 稀鹽酸滴定反應</div>' +
+              '<div class="log-detail">在樣品表面滴入一滴常溫稀鹽酸，<b>接觸點瞬間劇烈沸騰，連續湧出大量滋滋作響的細小氣泡</b>！</div>' +
+              '<div class="log-clue">化學現象：在常溫常壓條件下與稀鹽酸迅速反應，產生氣體</div>';
+          } else {
+            item.innerHTML = '<div class="log-title">🧪 5% 稀鹽酸滴定反應</div>' +
+              '<div class="log-detail">滴入稀鹽酸後，液滴安靜平伏於樣品表面，<b>液滴保持透明，完全未觀察到任何氣泡釋出</b>。</div>' +
+              '<div class="log-clue">化學現象：常溫狀態下不與 5% 稀鹽酸發生可辨識的分解反應</div>';
+          }
+          break;
+
+        case "streak":
+          item.classList.add("gold");
+          item.innerHTML = '<div class="log-title">⚪ 無釉白瓷板條痕測試</div>' +
+            '<div class="log-detail">用力在無釉瓷板（硬度約 6.5）上刻劃，瓷板表面留下的微細粉末顏色為：<b>【' + currentSample.streak + '】</b>。</div>' +
+            '<div class="log-clue">物理現象：粉末狀態下的固有光學反射色彩</div>';
+          break;
+
+        case "lens":
+          item.innerHTML = '<div class="log-title">🔍 高倍手持放大鏡微觀觀察</div>' +
+            '<div class="log-detail">' + currentSample.lensObs + '</div>' +
+            '<div class="log-clue">物理現象：受力破裂時展現的內部結構特徵（平整反光幾何弱面 vs 無方向性凹凸弧紋）</div>';
+          break;
+
+        case "fingernail":
+          if (currentSample.nailScratch) {
+            item.classList.add("green");
+            item.innerHTML = '<div class="log-title">🖐️ 人類指甲刻劃測試</div>' +
+              '<div class="log-detail">用手指甲（刻度基準約 2.5）用力按壓刮刻，樣品表面<b>被輕易刮出一道肉眼可辨的清晰白痕</b>。</div>' +
+              '<div class="log-clue">物理現象：樣品硬度 ≤ 2.5（小於人體指甲硬度）</div>';
+          } else {
+            item.innerHTML = '<div class="log-title">🖐️ 人類指甲刻劃測試</div>' +
+              '<div class="log-detail">指甲無法在樣品表面留下刻痕；若改用<b>銅幣/銅鑰匙（刻度約 3.5）</b>刻劃，可觀察到劃痕反應。</div>' +
+              '<div class="log-clue">物理現象：樣品硬度介於 2.5 ~ 5.0 區間</div>';
+          }
+          break;
+      }
+
+      logContainer.appendChild(item);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function submitDeduction() {
+      if (!currentSample) {
+        alert("請先抽取盲盒樣品！");
+        return;
+      }
+
+      var predicted = document.getElementById("guess-mineral").value;
+      var resBox = document.getElementById("result-box");
+
+      if (!predicted) {
+        alert("請先下拉選擇你所推斷的礦物名稱！");
+        return;
+      }
+
+      var isCorrect = (predicted === currentSample.name);
+
+      resBox.style.display = "block";
+      if (isCorrect) {
+        solvedCount++;
+        streakCount++;
+        document.getElementById("solved-count").innerText = solvedCount;
+        document.getElementById("streak-count").innerText = streakCount;
+
+        resBox.className = "result-card success";
+        resBox.innerHTML = '<b>🎯 破案成功！該樣品確為【' + currentSample.name + ' (' + currentSample.en + ')】</b><br><br>' +
+          '<b>競賽級論證邏輯：</b><br>' + currentSample.deduction;
+      } else {
+        streakCount = 0;
+        document.getElementById("streak-count").innerText = streakCount;
+
+        resBox.className = "result-card error";
+        resBox.innerHTML = '<b>❌ 推斷偏差！你判定為【' + predicted + '】，但真實樣品是【' + currentSample.name + '】</b><br><br>' +
+          '<b>關鍵漏洞分析：</b><br>該樣品的真實硬度為 ' + currentSample.hardness + '；' + currentSample.deduction;
+      }
+    }
+
+    // 使用最穩健的事件委派（相容所有版本的 iPadOS Safari 與 Chrome）
+    document.addEventListener("click", function(e) {
+      var target = e.target;
+      
+      // 1. 抽取新樣品
+      if (target.id === "btn-draw" || target.closest("#btn-draw")) {
+        drawNewSample();
+        return;
+      }
+
+      // 2. 提交鑑定
+      if (target.id === "btn-submit" || target.closest("#btn-submit")) {
+        submitDeduction();
+        return;
+      }
+
+      // 3. 查看秘籍按鈕
+      if (target.id === "btn-open-guide" || target.closest("#btn-open-guide")) {
+        document.getElementById("guide-modal").style.display = "flex";
+        return;
+      }
+
+      // 4. 關閉秘籍按鈕
+      if (target.id === "btn-close-guide" || target.closest("#btn-close-guide")) {
+        document.getElementById("guide-modal").style.display = "none";
+        return;
+      }
+
+      // 5. 點擊遮罩關閉彈窗
+      if (target.id === "guide-modal") {
+        document.getElementById("guide-modal").style.display = "none";
+        return;
+      }
+
+      // 6. 工具按鈕群
+      var toolBtn = target.closest(".tool-btn");
+      if (toolBtn) {
+        var toolName = toolBtn.getAttribute("data-tool");
+        applyTool(toolName);
+        return;
+      }
+    });
+
+    // 啟動加載第一個樣品
+    window.onload = function() {
+      drawNewSample();
+    };
+  </script>
+</body>
+</html>
