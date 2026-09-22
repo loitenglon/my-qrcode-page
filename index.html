@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>20大核心造岩與特徵礦物排查終端 (移動/平板高級版)</title>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --panel-bg: #131d2e;
+      --card-bg: #1e293b;
+      --accent-cyan: #38bdf8;
+      --accent-gold: #fbbf24;
+      --accent-green: #34d399;
+      --accent-red: #f87171;
+      --accent-purple: #c084fc;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 12px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* iOS 狀態診斷條 */
+    #ios-status-bar {
+      background: #451a03;
+      color: #fde68a;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      margin-bottom: 12px;
+      text-align: center;
+      border: 1px solid #b45309;
+      line-height: 1.4;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 14px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .title-group h1 {
+      font-size: 1.25rem;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score-badge {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .score-badge span b {
+      color: var(--accent-gold);
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 310px;
+      gap: 14px;
+      flex: 1;
+    }
+
+    /* iPad 直屏與手機端響應式排版 */
+    @media (max-width: 980px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 6px;
+    }
+
+    .specimen-display {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 12px;
+      border: 2px dashed var(--accent-cyan);
+    }
+
+    .specimen-code {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      margin: 6px 0;
+    }
+
+    .specimen-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      text-align: left;
+      background: rgba(0,0,0,0.25);
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 500;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+      background: #334155;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      border-color: #0ea5e9;
+    }
+
+    .btn-gold {
+      background: #d97706;
+      border-color: #f59e0b;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .tool-btn {
+      padding: 10px 8px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    .tool-btn b {
+      color: var(--accent-cyan);
+      font-size: 0.82rem;
+      pointer-events: none;
+    }
+
+    .tool-btn span {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .log-container {
+      flex: 1;
+      background: #060911;
+      border-radius: 6px;
+      padding: 10px;
+      overflow-y: auto;
+      border: 1px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 160px;
+      max-height: 380px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .log-item {
+      background: #111827;
+      border-left: 4px solid var(--accent-cyan);
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    .log-item.gold { border-left-color: var(--accent-gold); }
+    .log-item.green { border-left-color: var(--accent-green); }
+    .log-item.purple { border-left-color: var(--accent-purple); }
+
+    .log-title {
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: var(--accent-cyan);
+    }
+
+    .log-detail {
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+
+    .log-physics {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #1f2937;
+      font-size: 0.72rem;
+      color: var(--accent-gold);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .result-card {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .result-card.success {
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid var(--accent-green);
+      color: #a7f3d0;
+    }
+
+    .result-card.error {
+      background: rgba(248, 113, 113, 0.12);
+      border: 1px solid var(--accent-red);
+      color: #fecaca;
+    }
+
+    /* Modal Reference */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 14px;
+    }
+
+    .modal-content {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      max-width: 960px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+      color: #cbd5e1;
+    }
+
+    .matrix-table th, .matrix-table td {
+      border: 1px solid #334155;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .matrix-table th {
+      background: #1e293b;
+      color: var(--accent-cyan);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .svg-thumb-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .svg-thumb-wrap svg {
+      width: 42px;
+      height: 42px;
+      pointer-events: none;
+    }
+
+    /* Lightbox Preview */
+    .img-preview-box {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #0f172a;
+      border: 2px solid var(--accent-cyan);
+      border-radius: 10px;
+      padding: 14px;
+      z-index: 10000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+      width: 300px;
+      text-align: center;
+    }
+
+    .img-preview-box .large-svg-wrap {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 10px;
+      background: #090d16;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .img-preview-box .large-svg-wrap svg {
+      width: 170px;
+      height: 170px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- iPad/手機運行狀態提示條 -->
+  <div id="ios-status-bar">
+    ⚠️ 系統啟動中：若未轉為綠色「環境正常」，請勿使用「檔案」App 快速預覽，請長按檔案點「分享」並選擇「Safari」開啟！
+  </div>
+
+  <header>
+    <div class="title-group">
+      <h1>🔬 20大核心造岩與特徵礦物排查終端 (高級版)</h1>
+    </div>
+    <div class="score-badge">
+      <span>已破案: <b id="solved-count">0</b></span>
+      <span>連勝: <b id="streak-count">0</b></span>
+      <button type="button" class="btn btn-gold" id="btn-open-guide" style="padding:4px 8px; font-size:0.75rem;">📊 礦物特徵圖譜</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Left Panel: 當前樣品 -->
+    <div class="panel">
+      <div class="panel-title">📦 當前盲盒標本</div>
+      <div class="specimen-display">
+        <div style="font-size:0.75rem; color:var(--text-muted);">未知地下岩芯樣品</div>
+        <div class="specimen-code" id="sample-id">#SP-01</div>
+        <div class="specimen-desc" id="sample-initial-desc">載入中...</div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="btn-draw" style="width:100%; margin-bottom:12px;">
+        🎲 抽取新盲盒標本
+      </button>
+
+      <div style="font-size:0.74rem; color:var(--text-muted); line-height:1.45; margin-top:auto; background:rgba(0,0,0,0.25); padding:8px; border-radius:6px;">
+        <b>競賽鑑別守則：</b><br>
+        1. 依硬度分水嶺（玻璃 5.5 / 鋼刀 5.0 / 銅幣 3.5 / 指甲 2.5）縮小範圍。<br>
+        2. 放大鏡確認解理面反光或貝殼斷口。<br>
+        3. 特異功能：強磁性、雙折射、滑膩感、異向硬度。
+      </div>
+    </div>
+
+    <!-- Center Panel: 測試工具台 -->
+    <div class="panel">
+      <div class="panel-title">🛠️ 物理與化學檢測工具台（點選調用）</div>
+      
+      <div class="tools-grid">
+        <button type="button" class="btn tool-btn" data-tool="glass">
+          <b>🪟 玻璃板劃刻</b>
+          <span>初篩硬度是否 ≥ 5.5</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="knife_coin">
+          <b>🗡️ 鋼刀 / 銅幣刻劃</b>
+          <span>細測 3.5 ~ 5.5 區間</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="fingernail">
+          <b>🖐️ 指甲刻劃刻度</b>
+          <span>檢測極軟組 (≤ 2.5)</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="streak">
+          <b>⚪ 白瓷板條痕</b>
+          <span>消除表面色測定粉末</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="lens">
+          <b>🔍 放大鏡看解理/斷口</b>
+          <span>觀察弱面夾角或弧紋</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="magnet">
+          <b>🧲 強力磁鐵吸附</b>
+          <span>檢測天然感應磁性</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="hcl_block">
+          <b>🧪 原塊滴 5% 稀鹽酸</b>
+          <span>檢測常溫原石起泡</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="hcl_powder">
+          <b>🧂 刮粉後滴稀鹽酸</b>
+          <span>粉末狀態下酸反應</span>
+        </button>
+
+        <button type="button" class="btn tool-btn" data-tool="special">
+          <b>✨ 觸感與特異光學</b>
+          <span>滑膩度、雙折射、彈性</span>
+        </button>
+      </div>
+
+      <div class="panel-title" style="margin-top:6px;">📋 即時觀測記錄與客觀物理現象日誌</div>
+      <div class="log-container" id="test-logs">
+        <div style="color:var(--text-muted); font-size:0.8rem; text-align:center; padding:15px;">
+          請使用上方工具台對當前樣品進行測試，物理與化學實驗現象將呈現在此處。
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: 推斷結案 -->
+    <div class="panel">
+      <div class="panel-title">📝 鑑定論證與結案</div>
+      
+      <div class="form-group">
+        <label>推斷定名的礦物（20大核心庫）：</label>
+        <select id="guess-mineral">
+          <option value="">-- 請選擇鎖定礦物 --</option>
+          <optgroup label="造岩骨架矽酸鹽">
+            <option value="石英">石英 (Quartz)</option>
+            <option value="正長石/鉀長石">正長石/鉀長石 (K-Feldspar)</option>
+            <option value="斜長石">斜長石 (Plagioclase)</option>
+            <option value="黑雲母">黑雲母 (Biotite)</option>
+            <option value="白雲母">白雲母 (Muscovite)</option>
+            <option value="角閃石">角閃石 (Amphibole)</option>
+            <option value="橄欖石">橄欖石 (Olivine)</option>
+          </optgroup>
+          <optgroup label="碳酸鹽、蒸發與表生礦物">
+            <option value="方解石">方解石 (Calcite)</option>
+            <option value="白雲石">白雲石 (Dolomite)</option>
+            <option value="石膏">石膏 (Gypsum)</option>
+            <option value="石鹽">石鹽 (Halite)</option>
+            <option value="高嶺石">高嶺石 (Kaolinite)</option>
+          </optgroup>
+          <optgroup label="變質標型與特徵相礦物">
+            <option value="石榴子石">石榴子石 (Garnet)</option>
+            <option value="藍晶石">藍晶石 (Kyanite)</option>
+            <option value="滑石">滑石 (Talc)</option>
+            <option value="蛇紋石">蛇紋石 (Serpentine)</option>
+          </optgroup>
+          <optgroup label="金屬與特徵物理性質礦物">
+            <option value="磁鐵礦">磁鐵礦 (Magnetite)</option>
+            <option value="赤鐵礦">赤鐵礦 (Hematite)</option>
+            <option value="黃鐵礦">黃鐵礦 (Pyrite)</option>
+            <option value="螢石">螢石 (Fluorite)</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="btn-submit" style="width:100%; margin-top:8px;">
+        ⚖️ 提交判定並答辯
+      </button>
+
+      <div id="result-box" class="result-card"></div>
+    </div>
+  </div>
+
+  <!-- Modal Reference: 20 Minerals SVG Matrix -->
+  <div class="modal-overlay" id="guide-modal">
+    <div class="modal-content" id="modal-content">
+      <div class="modal-header">
+        <h2 style="color:var(--accent-cyan); font-size:1.05rem;">📊 20大核心礦物離線圖譜與特徵矩陣</h2>
+        <button type="button" class="btn" id="btn-close-guide" style="padding:4px 8px;">關閉</button>
+      </div>
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="width: 54px; text-align:center;">晶形</th>
+            <th>礦物名稱</th>
+            <th>化學分類</th>
+            <th>硬度</th>
+            <th>破裂特徵</th>
+            <th>條痕顏色</th>
+            <th>關鍵排他標誌</th>
+          </tr>
+        </thead>
+        <tbody id="matrix-tbody">
+          <!-- Dynamically Generated -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Lightbox SVG Preview -->
+  <div class="img-preview-box" id="lightbox-box">
+    <div class="large-svg-wrap" id="lightbox-svg-target"></div>
+    <div id="lightbox-caption" style="font-size:0.85rem; color:var(--accent-gold); font-weight:600;"></div>
+    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">點選下方按鈕關閉預覽</div>
+    <button type="button" class="btn" style="margin-top:10px; width:100%;" id="btn-close-lightbox">關閉預覽</button>
+  </div>
+
+  <script>
+    // 立即向頂部指示條報告腳本已啟動
+    (function checkJS() {
+      var bar = document.getElementById("ios-status-bar");
+      if (bar) {
+        bar.style.background = "#064e3b";
+        bar.style.color = "#6ee7b7";
+        bar.style.borderColor = "#059669";
+        bar.innerHTML = "✅ iPad / 行動瀏覽器環境正常，進階排查終端已就緒！";
+      }
+    })();
+
+    // 20 種核心礦物離線原生 SVG 向量圖
+    function getMineralSVG(name) {
+      switch(name) {
+        case "石英":
+          return '<svg viewBox="0 0 100 100"><polygon points="50,10 78,35 70,85 30,85 22,35" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/><polygon points="50,10 78,35 50,55 22,35" fill="#f8fafc" opacity="0.6"/><path d="M35,60 Q50,70 65,60 M38,68 Q50,78 62,68 M42,75 Q50,82 58,75" stroke="#cbd5e1" stroke-width="1.5" fill="none"/></svg>';
+        case "正長石/鉀長石":
+          return '<svg viewBox="0 0 100 100"><polygon points="20,35 65,20 85,60 40,75" fill="#f87171" stroke="#b91c1c" stroke-width="2"/><polygon points="40,75 85,60 75,85 30,95" fill="#dc2626" opacity="0.8"/><line x1="30" y1="45" x2="70" y2="35" stroke="#fecaca" stroke-width="1.5"/><line x1="35" y1="58" x2="75" y2="48" stroke="#fecaca" stroke-width="1.5"/></svg>';
+        case "斜長石":
+          return '<svg viewBox="0 0 100 100"><polygon points="25,30 75,20 85,65 35,75" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/><polygon points="35,75 85,65 75,88 25,95" fill="#94a3b8"/><line x1="32" y1="40" x2="78" y2="30" stroke="#475569" stroke-width="1"/><line x1="35" y1="48" x2="81" y2="38" stroke="#475569" stroke-width="1"/><line x1="38" y1="56" x2="84" y2="46" stroke="#475569" stroke-width="1"/></svg>';
+        case "黑雲母":
+          return '<svg viewBox="0 0 100 100"><polygon points="15,40 60,25 90,50 45,70" fill="#1e293b" stroke="#0f172a" stroke-width="2"/><polygon points="12,48 57,33 87,58 42,78" fill="#334155" stroke="#0f172a" stroke-width="1.5"/><polygon points="9,56 54,41 84,66 39,86" fill="#1e293b" stroke="#0f172a" stroke-width="1.5"/></svg>';
+        case "白雲母":
+          return '<svg viewBox="0 0 100 100"><polygon points="15,35 65,20 90,45 40,65" fill="#f1f5f9" opacity="0.6" stroke="#cbd5e1" stroke-width="2"/><polygon points="10,45 60,30 85,55 35,75" fill="#ffffff" opacity="0.8" stroke="#94a3b8" stroke-width="1.5"/><polygon points="8,55 58,40 83,65 33,85" fill="#f8fafc" opacity="0.5" stroke="#cbd5e1" stroke-width="1.5"/></svg>';
+        case "角閃石":
+          return '<svg viewBox="0 0 100 100"><polygon points="40,15 65,25 60,85 35,75" fill="#0f172a" stroke="#022c22" stroke-width="2"/><polygon points="35,75 60,85 50,92 25,82" fill="#1e293b"/><line x1="45" y1="17" x2="40" y2="77" stroke="#334155" stroke-width="1.5"/><polygon points="40,15 52,10 65,25 53,30" fill="#2dd4bf" opacity="0.4"/></svg>';
+        case "橄欖石":
+          return '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="#65a30d" stroke="#365314" stroke-width="2"/><circle cx="35" cy="40" r="14" fill="#84cc16" opacity="0.7"/><circle cx="65" cy="55" r="18" fill="#4d7c0f"/><circle cx="48" cy="68" r="10" fill="#84cc16" opacity="0.8"/></svg>';
+        case "方解石":
+          return '<svg viewBox="0 0 100 100"><polygon points="30,25 80,20 65,60 15,65" fill="#f8fafc" stroke="#64748b" stroke-width="2"/><polygon points="15,65 65,60 75,90 25,95" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/><polygon points="65,60 80,20 90,50 75,90" fill="#94a3b8" stroke="#64748b" stroke-width="2"/></svg>';
+        case "白雲石":
+          return '<svg viewBox="0 0 100 100"><polygon points="28,28 78,22 66,58 16,64" fill="#fce7f3" stroke="#be185d" stroke-width="1.5"/><polygon points="16,64 66,58 74,88 24,94" fill="#fbcfe8" stroke="#be185d" stroke-width="1.5"/><polygon points="66,58 78,22 88,52 74,88" fill="#f472b6" opacity="0.6" stroke="#be185d" stroke-width="1.5"/></svg>';
+        case "石膏":
+          return '<svg viewBox="0 0 100 100"><polygon points="20,40 50,15 80,40 65,90 35,90" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="50" x2="40" y2="85" stroke="#cbd5e1" stroke-width="1.5"/><line x1="45" y1="35" x2="52" y2="88" stroke="#cbd5e1" stroke-width="1.5"/><line x1="60" y1="45" x2="63" y2="85" stroke="#cbd5e1" stroke-width="1.5"/></svg>';
+        case "石鹽":
+          return '<svg viewBox="0 0 100 100"><polygon points="25,40 55,20 85,35 55,55" fill="#e2e8f0" stroke="#475569" stroke-width="2"/><polygon points="25,40 55,55 55,90 25,75" fill="#cbd5e1" stroke="#475569" stroke-width="2"/><polygon points="55,55 85,35 85,70 55,90" fill="#94a3b8" stroke="#475569" stroke-width="2"/></svg>';
+        case "高嶺石":
+          return '<svg viewBox="0 0 100 100"><path d="M20,60 Q35,30 60,35 Q85,40 80,70 Q70,90 40,88 Q15,85 20,60 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><circle cx="35" cy="55" r="4" fill="#e2e8f0"/><circle cx="55" cy="50" r="6" fill="#cbd5e1"/><circle cx="60" cy="70" r="5" fill="#e2e8f0"/></svg>';
+        case "石榴子石":
+          return '<svg viewBox="0 0 100 100"><polygon points="50,10 75,25 85,55 70,85 30,85 15,55 25,25" fill="#881337" stroke="#4c0519" stroke-width="2"/><polygon points="50,10 75,25 50,45 25,25" fill="#be123c"/><polygon points="50,45 75,25 85,55 60,65" fill="#9f1239"/><polygon points="50,45 25,25 15,55 40,65" fill="#e11d48"/></svg>';
+        case "藍晶石":
+          return '<svg viewBox="0 0 100 100"><polygon points="35,15 65,10 55,90 25,95" fill="#0284c7" stroke="#0369a1" stroke-width="2"/><polygon points="45,13 65,10 55,90 35,93" fill="#38bdf8" opacity="0.6"/><line x1="40" y1="20" x2="33" y2="88" stroke="#bae6fd" stroke-width="1"/><line x1="50" y1="20" x2="43" y2="88" stroke="#bae6fd" stroke-width="1"/></svg>';
+        case "滑石":
+          return '<svg viewBox="0 0 100 100"><path d="M25,45 Q40,25 70,30 Q90,50 75,75 Q55,90 30,80 Q10,70 25,45 Z" fill="#dcfce7" stroke="#86efac" stroke-width="2"/><path d="M30,55 Q50,40 65,60" stroke="#bbf7d0" stroke-width="2" fill="none"/><path d="M40,68 Q60,60 70,72" stroke="#bbf7d0" stroke-width="2" fill="none"/></svg>';
+        case "蛇紋石":
+          return '<svg viewBox="0 0 100 100"><path d="M25,35 Q60,15 80,40 Q95,75 65,85 Q30,95 15,65 Q10,45 25,35 Z" fill="#14532d" stroke="#052e16" stroke-width="2"/><path d="M28,45 Q50,30 75,50" stroke="#4ade80" stroke-width="2.5" fill="none"/><path d="M25,65 Q55,50 68,75" stroke="#86efac" stroke-width="2" fill="none"/></svg>';
+        case "磁鐵礦":
+          return '<svg viewBox="0 0 100 100"><polygon points="50,15 85,50 50,85 15,50" fill="#0f172a" stroke="#020617" stroke-width="2"/><polygon points="50,15 85,50 50,50" fill="#334155"/><polygon points="50,15 15,50 50,50" fill="#1e293b"/><line x1="50" y1="15" x2="50" y2="85" stroke="#475569" stroke-width="1.5"/></svg>';
+        case "赤鐵礦":
+          return '<svg viewBox="0 0 100 100"><circle cx="35" cy="45" r="22" fill="#450a0a" stroke="#7f1d1d" stroke-width="2"/><circle cx="65" cy="45" r="24" fill="#7f1d1d" stroke="#991b1b" stroke-width="2"/><circle cx="50" cy="70" r="22" fill="#3f1414" stroke="#7f1d1d" stroke-width="2"/><circle cx="35" cy="45" r="14" fill="#991b1b" opacity="0.6"/></svg>';
+        case "黃鐵礦":
+          return '<svg viewBox="0 0 100 100"><polygon points="25,40 55,20 85,35 55,55" fill="#fbbf24" stroke="#b45309" stroke-width="2"/><polygon points="25,40 55,55 55,90 25,75" fill="#d97706" stroke="#b45309" stroke-width="2"/><polygon points="55,55 85,35 85,70 55,90" fill="#b45309" stroke="#78350f" stroke-width="2"/><line x1="28" y1="52" x2="52" y2="65" stroke="#fef3c7" stroke-width="1"/><line x1="30" y1="62" x2="52" y2="75" stroke="#fef3c7" stroke-width="1"/></svg>';
+        case "螢石":
+          return '<svg viewBox="0 0 100 100"><polygon points="50,15 85,50 50,85 15,50" fill="#a855f7" stroke="#6b21a8" stroke-width="2"/><polygon points="50,15 85,50 50,50" fill="#c084fc" opacity="0.8"/><polygon points="50,50 85,50 50,85" fill="#9333ea"/><polygon points="15,50 50,50 50,85" fill="#34d399" opacity="0.7"/></svg>';
+        default:
+          return '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#334155"/></svg>';
+      }
+    }
+
+    var mineralDB = [
+      {
+        name: "石英",
+        en: "Quartz",
+        initialDesc: "無色半透明至乳白色塊體，邊緣透光，斷面呈現平滑圓弧狀，表面具弱油脂光澤。",
+        hardness: 7,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "無色至白色粉末",
+        lensObs: "斷口處呈現如破碎啤酒瓶底般的平滑同心圓弧狀波紋，表面無任何平整反光的幾何解理弱面。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "光學性質均勻，斷裂面呈典型貝殼狀弧紋；用鐵錘敲擊未見特定角度幾何碎裂。",
+        deduction: "硬度為 7，能在玻璃板上留下深痕；具備標準貝殼狀斷口且完全無解理弱面；滴酸完全無反應。"
+      },
+      {
+        name: "正長石/鉀長石",
+        en: "K-Feldspar",
+        initialDesc: "肉紅色至粉橘色緻密塊狀，具玻璃光澤，某些特定角度呈現平整的反光帶。",
+        hardness: 6,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "可觀察到兩組相互垂直（夾角約 90°）的平整解理面；表面隱約可見波狀條帶狀的出溶紋理。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "轉動樣品時，可在解理面上看到大面積平整階梯反光閃光。",
+        deduction: "硬度大於 5.5（劃傷玻璃）；具有兩組近 90° 的完全解理面與肉紅色外觀，酸測試不反應。"
+      },
+      {
+        name: "斜長石",
+        en: "Plagioclase",
+        initialDesc: "灰白色至淺灰色塊體，半透明至微透明，解理面上可見細密的平行反光紋理。",
+        hardness: 6,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "具兩組近 90° 平整解理面；在其中一組完全解理面上，可見排列極為緊密的平行微細條紋（雙晶紋）。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "轉動角度反光時，表面細條紋呈現明暗相間的平行干涉閃光。",
+        deduction: "硬度大於 5.5，具兩組近垂直解理，解理面上發育特徵性的聚片雙晶細條紋，排除了石英。"
+      },
+      {
+        name: "黑雲母",
+        en: "Biotite",
+        initialDesc: "深褐色至墨黑色片狀集合體，略帶微弱金屬光澤，邊緣薄層透光呈黃褐色。",
+        hardness: 2.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "灰白色至淺褐色粉末",
+        lensObs: "具備一組極完全底面解理，層狀薄片如書頁疊置，層間結合極薄弱。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "用針尖挑取薄片，薄片在外力彎曲後能迅速彈回原狀，具備顯著彈性（非塑性變形）。",
+        deduction: "硬度極低（指甲可輕易刻劃）；單向極完全解理可剝離出深色且具彈性的透明薄頁。"
+      },
+      {
+        name: "白雲母",
+        en: "Muscovite",
+        initialDesc: "無色透明至微帶淺綠的片狀晶體，具光亮珍珠光澤至絲絹光澤，層次分明。",
+        hardness: 2.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "白色粉末",
+        lensObs: "發育一組極完全解理，極易用小刀沿層面分層剝離出大面積平整透明的薄膜。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "剝離下來的超薄晶片完全透明，對折彎曲放開後能自主復原，富彈性。",
+        deduction: "指甲能劃動（硬度約 2.5）；無色透明，單向極完全解理且具彈性，排除石膏與滑石。"
+      },
+      {
+        name: "角閃石",
+        en: "Amphibole",
+        initialDesc: "墨綠色至黑色長柱狀、針狀集合體，縱向紋理清晰，斷口處呈纖維狀反光。",
+        hardness: 5.5,
+        canScratchGlass: false,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "無色至極淺綠灰色粉末",
+        lensObs: "長柱狀晶體橫截面上，清楚可見兩組解理面相交，其夾角呈現約 56° 與 124° 的菱形交角。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "橫向碎片橫斷面多呈菱形或斜六邊形，解理夾角非 90°。",
+        deduction: "長柱狀深色晶體；最核心的排他性標誌是兩組完全解理交角約為 56°/124°（與輝石的近 90° 明確區分）。"
+      },
+      {
+        name: "橄欖石",
+        en: "Olivine",
+        initialDesc: "典型的黃綠色至橄欖綠色砂糖粒狀集合體，晶粒清澈透亮，具鮮明的玻璃光澤。",
+        hardness: 6.5,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "粒狀聚集，晶粒界面多呈不規則彎曲，斷口粗糙或微具貝殼狀，看不到平整的反光解理面。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "手感沉實，無解理面閃光，整體呈現均勻綠色顆粒堆疊。",
+        deduction: "硬度高達 6.5–7（劃傷玻璃）；特徵橄欖綠色、砂糖狀顆粒集合體且無解理面。"
+      },
+      {
+        name: "方解石",
+        en: "Calcite",
+        initialDesc: "乳白或透明斜方狀晶體，外形略帶傾斜棱角，表面光滑如打蠟，斷口規整。",
+        hardness: 3,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "發育三組完全解理，各解理面相交約 75°，碎塊永遠呈傾斜菱面體幾何形態。",
+        magnet: false,
+        hclBlock: true,
+        hclPowder: true,
+        special: "將透明晶體平覆在帶字紙張上，可穿透晶體觀察到紙上文字出現清晰的雙重分離倒影（雙折射）。",
+        deduction: "硬度 3（銅幣可刻劃、指甲劃不動）；三組菱面體解理；原石滴稀鹽酸瞬間劇烈起泡；具顯著雙折射。"
+      },
+      {
+        name: "白雲石",
+        en: "Dolomite",
+        initialDesc: "灰白色至肉白色細晶塊體，斷面上結晶細密，表面略帶彎曲馬鞍狀晶面特徵。",
+        hardness: 3.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "具三組菱面體解理，晶面往往呈現輕微的馬鞍狀扭曲弧度，反光微顯珍珠光澤。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: true,
+        special: "常溫整塊原石滴冷酸無氣泡反應；將其置於研缽中刮研成細粉後滴酸，緩慢析出細小氣泡。",
+        deduction: "硬度 3.5–4；菱面體解理；核心排他點：原塊滴冷稀鹽酸無反應，必須刮成粉末後才起泡。"
+      },
+      {
+        name: "石膏",
+        en: "Gypsum",
+        initialDesc: "雪白色、半透明板狀或緻密纖維狀塊體，質地柔和細膩，摸起來無砂礫摩擦感。",
+        hardness: 2,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "純白色粉末",
+        lensObs: "具備一組完全解理，斷口呈絲狀或平整階面，質地極度軟脆，棱角易被外力壓碎成粉。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "手指甲不需大幅用力，即可在樣品表面刻出一道肉眼可見的白色刻溝，無任何阻力。",
+        deduction: "莫氏硬度標尺標準級礦物（硬度 2）；指甲能輕易割劃留痕；滴酸不起泡，不具滑膩手感。"
+      },
+      {
+        name: "石鹽",
+        en: "Halite",
+        initialDesc: "無色透明至白色立方塊狀晶體，晶瑩剔透，邊緣呈清晰直角立體形態。",
+        hardness: 2.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "白色粉末",
+        lensObs: "發育三組相互完全垂直（90° 嚴格夾角）的完全解理，破裂時沿著立方體面整齊剝開。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "極易溶於常溫純水，在濕潤空氣中表面易潮解失去平整光澤。",
+        deduction: "硬度約 2.5；三組嚴格正交（90°）的立方體解理，高度易溶於水。"
+      },
+      {
+        name: "高嶺石",
+        en: "Kaolinite",
+        initialDesc: "純白至淺灰白色土狀疏鬆塊體，完全無光澤，手感乾燥粗糙，易掉粉弄髒手指。",
+        hardness: 1.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "白色粉末",
+        lensObs: "微觀呈極細微的鱗片狀微晶疏鬆聚集，無可辨識的幾何晶面，斷口呈不均勻土狀。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "樣品乾燥時具備顯著的毛細吸水性，滴水時會吸附表面，散發特徵性的泥土腥味。",
+        deduction: "土狀光澤，質地極軟易擦粉；具備強烈親水吸附性並伴隨泥土氣味，長石風化最終產物。"
+      },
+      {
+        name: "石榴子石",
+        en: "Garnet",
+        initialDesc: "深酒紅至黑紅色等軸晶體，形似球體，鑲嵌在基質中，斷口呈微油脂光澤。",
+        hardness: 7.5,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "無色至白色粉末",
+        lensObs: "呈現極為標準的菱形十二面體或二十四面體幾何晶面；受力無特定方向解理，斷口不平整。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "硬度極高，甚至能劃傷石英晶體表面；晶面平滑對稱但受力不沿晶面裂開。",
+        deduction: "硬度超過 7（劃傷石英與玻璃）；無解理；典型菱形十二面體晶形，變質相代表指標。"
+      },
+      {
+        name: "藍晶石",
+        en: "Kyanite",
+        initialDesc: "淺天藍至深藍色扁平刀片狀柱狀晶體，常呈束狀定向排列，中心顏色偏深。",
+        hardness: 5.5,
+        canScratchGlass: true,
+        scratchedByKnife: true,
+        scratchedByNail: false,
+        streak: "白色粉末",
+        lensObs: "扁平單斜柱狀，有一組完全解理；晶面上發育縱向平行生長紋。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "展現極端特異的『異向硬度』：沿刀片長度方向刻劃，鋼刀能劃動（硬度約 4.5）；垂直長度方向刻劃，鋼刀打滑且能割傷玻璃（硬度約 7）。",
+        deduction: "藍色扁平刀片狀晶形；具備標誌性的異向硬度（平行柱軸 4.5，垂直柱軸 7），區域變質相代表。"
+      },
+      {
+        name: "滑石",
+        en: "Talc",
+        initialDesc: "銀白至淺蘋果綠色緻密塊體，呈蠟狀至珍珠光澤，表面半透明。",
+        hardness: 1,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: true,
+        streak: "白色細膩粉末",
+        lensObs: "片狀或隱晶緻密微晶聚集，薄片具微弱撓性，邊緣受力易碎成微細薄屑。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "手指觸摸表面具有極度強烈的油潤滑膩感，猶如塗抹了乾固肥皂或油脂，觸感極為特異。",
+        deduction: "莫氏硬度階梯底端（硬度 1）；手指甲能毫無阻礙地刮下粉末；具有不可替代的極致滑膩觸感。"
+      },
+      {
+        name: "蛇紋石",
+        en: "Serpentine",
+        initialDesc: "深綠、黃綠或墨綠相間斑塊，外表油潤發亮，紋理交錯縱橫，外觀酷似蛇皮斑紋。",
+        hardness: 3.5,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: false,
+        streak: "純白色粉末",
+        lensObs: "纖維狀至葉片狀交織交錯構造，斷口呈現油脂光澤至蠟狀光澤，無單一平整解理面。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "手感稍帶滑潤但遠不及滑石；斷面具絲絹光澤或波狀油脂條紋，質地緻密。",
+        deduction: "硬度 2.5–4（銅幣可刻劃，鋼刀易刻動）；斑駁墨綠外觀伴隨蠟狀/油脂光澤；洋底水熱變質代表。"
+      },
+      {
+        name: "磁鐵礦",
+        en: "Magnetite",
+        initialDesc: "鋼黑至鐵黑色緻密塊狀，具半金屬光澤，手感極度沉重沉實，邊緣有小晶面反光。",
+        hardness: 6,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "黑色粉末",
+        lensObs: "微粒集合體中偶見微細的八面體幾何晶形；斷口不平整，無完全解理平面。",
+        magnet: true,
+        hclBlock: false,
+        hclPowder: false,
+        special: "當強力磁鐵靠近樣品時，磁鐵與樣品產生強勁的吸附拉力，能直接被磁鐵吸起或吸附鋼針。",
+        deduction: "硬度約 6 能刻傷玻璃；條痕呈黑色；核心必殺標誌：具備強烈天然感應磁性，吸附鐵質。"
+      },
+      {
+        name: "赤鐵礦",
+        en: "Hematite",
+        initialDesc: "外觀呈沉重的鋼灰色、深鐵黑色至紅褐色塊體，帶微弱金屬反光或鈍暗光澤。",
+        hardness: 6,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "鮮明櫻桃紅色至暗紅棕色粉末",
+        lensObs: "斷面呈參差狀或腎狀、鮞狀微粒集合，局部呈金屬光澤薄鱗片狀。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "雖然外觀可能為純黑或冷鋼灰色，但無論何種晶相，刻劃碎裂出的粉末皆為顯著的櫻桃紅色。",
+        deduction: "硬度 5.5–6.5 能割劃玻璃；不具顯著磁性；核心鑑別指紋：條痕板上粉末必呈櫻桃紅至紅棕色。"
+      },
+      {
+        name: "黃鐵礦",
+        en: "Pyrite",
+        initialDesc: "明亮耀眼的金黃色塊體，具耀目強金屬光澤，晶面發育微細刻線，手感沉重。",
+        hardness: 6.5,
+        canScratchGlass: true,
+        scratchedByKnife: false,
+        scratchedByNail: false,
+        streak: "墨綠色至黑褐色粉末",
+        lensObs: "立方體或五角十二面體晶形，晶面上清晰發育相互平行的微細條紋；斷口參差不平，無解理面。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "外表呈極高亮度的黃金色澤，但在白瓷板上反覆刻劃，粉末絕無絲毫金黃色成分。",
+        deduction: "金屬光澤金黃色外表；硬度 6–6.5 割傷玻璃；核心排他證據：條痕為綠黑/黑褐色，排除真金。"
+      },
+      {
+        name: "螢石",
+        en: "Fluorite",
+        initialDesc: "翠綠色或淺紫色半透明立方晶體，具光亮玻璃光澤，光線透過時顯得格外清澈。",
+        hardness: 4,
+        canScratchGlass: false,
+        scratchedByKnife: true,
+        scratchedByNail: false,
+        streak: "純白色粉末",
+        lensObs: "可見四組發育極好的完全解理；外力破裂時解理面常削去立方角部，形成等邊三角形八面體裂面。",
+        magnet: false,
+        hclBlock: false,
+        hclPowder: false,
+        special: "硬度介於銅幣與玻璃之間，指甲劃不動但鋼刀可輕易刻劃；在紫外線燈照射下激發強烈螢光。",
+        deduction: "莫氏標尺 4 號標準；四組八面體完全解理；玻璃光澤，綠/紫色立方晶體，無酸反應。"
+      }
+    ];
+
+    var currentSample = null;
+    var solvedCount = 0;
+    var streakCount = 0;
+
+    function renderMatrixTable() {
+      var tbody = document.getElementById("matrix-tbody");
+      tbody.innerHTML = "";
+      mineralDB.forEach(function(min) {
+        var tr = document.createElement("tr");
+        var svgCode = getMineralSVG(min.name);
+        tr.innerHTML = '<td style="text-align:center;">' +
+          '<div class="svg-thumb-wrap" data-lightbox-name="' + min.name + '" data-lightbox-en="' + min.en + '">' +
+            svgCode +
+          '</div>' +
+        '</td>' +
+        '<td><b>' + min.name + '</b><br><span style="font-size:0.7rem; color:var(--text-muted);">' + min.en + '</span></td>' +
+        '<td>' + getMineralGroup(min.name) + '</td>' +
+        '<td><b>' + min.hardness + '</b></td>' +
+        '<td>' + getCleavageDesc(min.name) + '</td>' +
+        '<td>' + min.streak + '</td>' +
+        '<td style="font-size:0.72rem;">' + min.deduction + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getMineralGroup(name) {
+      if (["石英", "正長石/鉀長石", "斜長石", "黑雲母", "白雲母", "角閃石", "橄欖石", "高嶺石", "石榴子石", "藍晶石", "滑石", "蛇紋石"].indexOf(name) !== -1) return "矽酸鹽類";
+      if (["方解石", "白雲石"].indexOf(name) !== -1) return "碳酸鹽類";
+      if (name === "石膏") return "硫酸鹽類";
+      if (["石鹽", "螢石"].indexOf(name) !== -1) return "鹵化物類";
+      if (["磁鐵礦", "赤鐵礦"].indexOf(name) !== -1) return "氧化物類";
+      if (name === "黃鐵礦") return "硫化物類";
+      return "其他";
+    }
+
+    function getCleavageDesc(name) {
+      if (["石英", "橄欖石", "石榴子石", "磁鐵礦", "赤鐵礦", "黃鐵礦"].indexOf(name) !== -1) return "無解理 / 斷口發育";
+      if (["黑雲母", "白雲母", "石膏", "藍晶石", "滑石"].indexOf(name) !== -1) return "一組極完全解理";
+      if (["正長石/鉀長石", "斜長石", "角閃石"].indexOf(name) !== -1) return "兩組完全解理";
+      if (["方解石", "白雲石", "石鹽"].indexOf(name) !== -1) return "三組完全解理 (菱面/立方)";
+      if (name === "螢石") return "四組八面體解理";
+      return "土狀 / 隱晶質斷口";
+    }
+
+    function openLightbox(name, en) {
+      var box = document.getElementById("lightbox-box");
+      var target = document.getElementById("lightbox-svg-target");
+      target.innerHTML = getMineralSVG(name);
+      document.getElementById("lightbox-caption").innerText = name + " (" + en + ")";
+      box.style.display = "block";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox-box").style.display = "none";
+    }
+
+    function drawNewSample() {
+      var randomIndex = Math.floor(Math.random() * mineralDB.length);
+      currentSample = mineralDB[randomIndex];
+
+      var randomCode = "SP-" + Math.floor(10 + Math.random() * 90);
+      document.getElementById("sample-id").innerText = "#" + randomCode;
+      document.getElementById("sample-initial-desc").innerText = currentSample.initialDesc;
+      
+      var logContainer = document.getElementById("test-logs");
+      logContainer.innerHTML = '<div class="log-item">' +
+        '<div class="log-title"><span>系統狀態</span><span>裝載完成</span></div>' +
+        '<div class="log-detail">樣品 <b>#' + randomCode + '</b> 已固定在檢測基座上。請調用工具台進行物理/化學性質檢測。</div>' +
+      '</div>';
+
+      document.getElementById("guess-mineral").value = "";
+      var resBox = document.getElementById("result-box");
+      resBox.style.display = "none";
+      resBox.className = "result-card";
+    }
+
+    function addLog(title, detail, physics, colorClass) {
+      var logContainer = document.getElementById("test-logs");
+      var item = document.createElement("div");
+      item.className = "log-item " + (colorClass || "");
+      item.innerHTML = '<div class="log-title"><span>' + title + '</span></div>' +
+        '<div class="log-detail">' + detail + '</div>' +
+        '<div class="log-physics">物理/化學現象判別：' + physics + '</div>';
+      logContainer.appendChild(item);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function applyTool(toolType) {
+      if (!currentSample) {
+        drawNewSample();
+      }
+
+      switch(toolType) {
+        case "glass":
+          if (currentSample.canScratchGlass) {
+            addLog("🪟 玻璃板刻劃測試", "樣品棱角在玻璃表面劃動，擦拭去表面粉末後，<b>玻璃板留下了一條清晰且無法抹去的永久凹痕</b>。", "硬度 ≥ 5.5（大於普通玻璃板基準刻度）", "gold");
+          } else {
+            addLog("🪟 玻璃板刻劃測試", "樣品棱角在玻璃表面打滑，擦拭擦去碎末後，<b>玻璃表面光滑完好，未留下任何刮痕刻印</b>。", "硬度 &lt; 5.5（小於普通玻璃板基準刻度）", "");
+          }
+          break;
+
+        case "knife_coin":
+          if (currentSample.scratchedByKnife && !currentSample.scratchedByNail) {
+            addLog("🗡️ 鋼刀 / 銅幣刻劃測試", "指甲劃不動該樣品；但使用鋼釘/小刀（硬度約 5.0-5.5）能輕易刻入表面並刮下粉末；銅幣（~3.5）亦能留下輕微劃痕。", "硬度介於 3.0 ~ 5.0 區間", "purple");
+          } else if (!currentSample.scratchedByKnife) {
+            addLog("🗡️ 鋼刀 / 銅幣刻劃測試", "使用鋼釘用力刻劃，鋼釘直接打滑，樣品表面無任何凹陷刮痕，金屬工具反而被磨損。", "硬度 &gt; 5.5（高於普通鋼材硬度）", "gold");
+          } else {
+            addLog("🗡️ 鋼刀 / 銅幣刻劃測試", "質地過於鬆軟，普通工具皆能極度輕鬆刻劃切入。", "硬度 ≤ 2.5（軟質礦物區間）", "");
+          }
+          break;
+
+        case "fingernail":
+          if (currentSample.scratchedByNail) {
+            addLog("🖐️ 指甲刻劃測試", "用手指甲（基準硬度約 2.5）用力按壓刮刻，樣品表面<b>直接被刻出一道顯著白溝</b>。", "硬度 ≤ 2.5（小於指甲硬度，屬極軟礦物範疇）", "green");
+          } else {
+            addLog("🖐️ 指甲刻劃測試", "手指甲在樣品表面打滑，無法在樣品表面留下任何刮痕，指甲邊緣反而受擠壓變形。", "硬度 &gt; 2.5（大於人體指甲硬度）", "");
+          }
+          break;
+
+        case "streak":
+          addLog("⚪ 無釉瓷板條痕測試", "在白瓷板（硬度約 6.5）上用力摩擦刻劃，表面留下的微細粉末條痕顏色為：<b>【" + currentSample.streak + "】</b>。", "消除外部色澤與包裹體干擾，反映礦物內部組分真實粉末光學色", "gold");
+          break;
+
+        case "lens":
+          addLog("🔍 高倍手持放大鏡微觀觀察", currentSample.lensObs, "反映內部微觀原子鍵結方向性（具特定晶格弱面解理 vs 各向均勻自由斷口）", "purple");
+          break;
+
+        case "magnet":
+          if (currentSample.magnet) {
+            addLog("🧲 強力磁鐵感應測試", "將強力磁鐵移至樣品附近時，<b>磁鐵與樣品產生顯著強大的吸附拉力</b>，甚至能直接被磁鐵吸起固定。", "具備天然強鐵磁性感應", "gold");
+          } else {
+            addLog("🧲 強力磁鐵感應測試", "磁鐵貼近並接觸樣品表面，完全未察覺到任何吸力或斥力排斥現象，兩者無磁性相互作用。", "無顯著天然鐵磁性", "");
+          }
+          break;
+
+        case "hcl_block":
+          if (currentSample.hclBlock) {
+            addLog("🧪 原塊滴 5% 稀鹽酸", "在原塊未磨損表面滴入一滴常溫冷稀鹽酸，接觸點<b>瞬間劇烈沸騰，大量氣泡滋滋作響連續湧出</b>！", "常溫冷酸條件下碳酸根迅速分解釋放 CO₂ 氣體", "green");
+          } else {
+            addLog("🧪 原塊滴 5% 稀鹽酸", "滴入稀鹽酸後，液滴安靜平伏於樣品表面，<b>完全未見任何肉眼可辨的氣泡產生</b>。", "常溫原石狀態下不與冷稀鹽酸發生劇烈化學分解", "");
+          }
+          break;
+
+        case "hcl_powder":
+          if (currentSample.hclPowder) {
+            if (currentSample.hclBlock) {
+              addLog("🧂 刮粉後滴稀鹽酸", "粉末與稀鹽酸接觸，反應極其劇烈，白色粉末幾乎瞬間隨氣泡沸騰溶解散失。", "微觀晶體表面積增大，碳酸根加速分解起泡", "green");
+            } else {
+              addLog("🧂 刮粉後滴稀鹽酸", "將原樣刮研成極細微粉末後滴入稀鹽酸，靜置數秒後，<b>粉末表面開始緩慢而穩定地持續冒出微細氣泡</b>。", "原塊不反應，但在粉末極大表面積下緩慢起泡分解", "green");
+            }
+          } else {
+            addLog("🧂 刮粉後滴稀鹽酸", "即使將樣品研磨成微細粉末後滴酸，液滴依然保持平靜透明，始終無任何氣泡釋出。", "物質組分中不含可被冷稀鹽酸分解的碳酸根結構", "");
+          }
+          break;
+
+        case "special":
+          addLog("✨ 觸感與特異光學檢測", currentSample.special, "特異物理性質分析（雙折射 / 極端潤滑度 / 彈性薄片 / 異向硬度）", "purple");
+          break;
+      }
+    }
+
+    function submitDeduction() {
+      if (!currentSample) {
+        alert("請先抽取盲盒樣品！");
+        return;
+      }
+
+      var predicted = document.getElementById("guess-mineral").value;
+      var resBox = document.getElementById("result-box");
+
+      if (!predicted) {
+        alert("請先下拉選擇你所推斷的礦物名稱！");
+        return;
+      }
+
+      var isCorrect = (predicted === currentSample.name);
+
+      resBox.style.display = "block";
+      if (isCorrect) {
+        solvedCount++;
+        streakCount++;
+        document.getElementById("solved-count").innerText = solvedCount;
+        document.getElementById("streak-count").innerText = streakCount;
+
+        resBox.className = "result-card success";
+        resBox.innerHTML = "<b>🎯 判定吻合！該標本確為【" + currentSample.name + " (" + currentSample.en + ")】</b><br><br>" +
+          "<b>競賽級論證依據：</b><br>" + currentSample.deduction;
+      } else {
+        streakCount = 0;
+        document.getElementById("streak-count").innerText = streakCount;
+
+        resBox.className = "result-card error";
+        resBox.innerHTML = "<b>❌ 推斷偏差！你判定為【" + predicted + "】，但真實樣品是【" + currentSample.name + "】</b><br><br>" +
+          "<b>排他性關鍵漏洞：</b><br>該樣品的真實硬度為 " + currentSample.hardness + "；" + currentSample.deduction;
+      }
+    }
+
+    // iPad / 行動端最穩健的事件委派（相容 iOS Safari 及 Chrome）
+    document.addEventListener("click", function(e) {
+      var target = e.target;
+
+      // 1. 抽取新標本
+      if (target.id === "btn-draw" || target.closest("#btn-draw")) {
+        drawNewSample();
+        return;
+      }
+
+      // 2. 提交鑑定
+      if (target.id === "btn-submit" || target.closest("#btn-submit")) {
+        submitDeduction();
+        return;
+      }
+
+      // 3. 開啟圖譜速查彈窗
+      if (target.id === "btn-open-guide" || target.closest("#btn-open-guide")) {
+        document.getElementById("guide-modal").style.display = "flex";
+        return;
+      }
+
+      // 4. 關閉圖譜速查彈窗
+      if (target.id === "btn-close-guide" || target.closest("#btn-close-guide")) {
+        document.getElementById("guide-modal").style.display = "none";
+        return;
+      }
+
+      // 5. 點擊彈窗外部遮罩關閉
+      if (target.id === "guide-modal") {
+        document.getElementById("guide-modal").style.display = "none";
+        return;
+      }
+
+      // 6. 點擊放大縮圖 (Lightbox)
+      var thumbWrap = target.closest(".svg-thumb-wrap");
+      if (thumbWrap) {
+        var name = thumbWrap.getAttribute("data-lightbox-name");
+        var en = thumbWrap.getAttribute("data-lightbox-en");
+        openLightbox(name, en);
+        return;
+      }
+
+      // 7. 關閉放大燈箱
+      if (target.id === "btn-close-lightbox" || target.closest("#btn-close-lightbox")) {
+        closeLightbox();
+        return;
+      }
+
+      // 8. 9大工具按鈕觸發
+      var toolBtn = target.closest(".tool-btn");
+      if (toolBtn) {
+        var toolName = toolBtn.getAttribute("data-tool");
+        applyTool(toolName);
+        return;
+      }
+    });
+
+    // 啟動初始化
+    window.onload = function() {
+      renderMatrixTable();
+      drawNewSample();
+    };
+  </script>
+</body>
+</html>
