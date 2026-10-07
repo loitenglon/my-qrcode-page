@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>20大核心造岩與特徵礦物排查終端 (移動/平板高級版)</title>
+  <title>20大核心造岩與特徵礦物排查終端 (進階競賽版)</title>
   <style>
     :root {
-      --bg-dark: #090d16;
-      --panel-bg: #131d2e;
-      --card-bg: #1e293b;
+      --bg-dark: #070c18;
+      --panel-bg: #101b2f;
+      --card-bg: #1b283f;
+      --card-hover: #243553;
       --accent-cyan: #38bdf8;
       --accent-gold: #fbbf24;
       --accent-green: #34d399;
       --accent-red: #f87171;
       --accent-purple: #c084fc;
-      --text-main: #f1f5f9;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --border-color: #334155;
     }
@@ -36,19 +37,6 @@
       flex-direction: column;
     }
 
-    /* iOS 狀態診斷條 */
-    #ios-status-bar {
-      background: #451a03;
-      color: #fde68a;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      margin-bottom: 12px;
-      text-align: center;
-      border: 1px solid #b45309;
-      line-height: 1.4;
-    }
-
     header {
       display: flex;
       justify-content: space-between;
@@ -56,7 +44,7 @@
       padding-bottom: 12px;
       border-bottom: 2px solid var(--border-color);
       margin-bottom: 14px;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -65,34 +53,35 @@
       color: var(--accent-cyan);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      letter-spacing: 0.5px;
     }
 
     .score-badge {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 8px;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       flex-shrink: 0;
     }
 
     .score-badge span b {
       color: var(--accent-gold);
+      font-weight: 700;
     }
 
     .main-layout {
       display: grid;
-      grid-template-columns: 280px 1fr 310px;
+      grid-template-columns: 290px 1fr 320px;
       gap: 14px;
       flex: 1;
     }
 
-    /* iPad 直屏與手機端響應式排版 */
-    @media (max-width: 980px) {
+    @media (max-width: 1024px) {
       .main-layout {
         grid-template-columns: 1fr;
       }
@@ -101,20 +90,20 @@
     .panel {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
     }
 
     .panel-title {
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       font-weight: 600;
       color: var(--text-main);
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 6px;
     }
@@ -122,33 +111,37 @@
     .specimen-display {
       background: var(--card-bg);
       border-radius: 8px;
-      padding: 14px;
+      padding: 16px;
       text-align: center;
       margin-bottom: 12px;
       border: 2px dashed var(--accent-cyan);
     }
 
     .specimen-code {
-      font-size: 1.7rem;
+      font-size: 1.9rem;
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--accent-gold);
       margin: 6px 0;
+      text-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
     }
 
     .specimen-desc {
-      font-size: 0.82rem;
+      font-size: 0.83rem;
       color: var(--text-muted);
       line-height: 1.45;
       text-align: left;
-      background: rgba(0,0,0,0.25);
-      padding: 8px;
-      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     button {
       cursor: pointer;
       font-family: inherit;
+      border: none;
+      outline: none;
     }
 
     .btn {
@@ -156,30 +149,38 @@
       color: var(--text-main);
       border: 1px solid var(--border-color);
       padding: 10px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       font-weight: 500;
       user-select: none;
-      -webkit-user-select: none;
+      transition: background 0.15s, border-color 0.15s, transform 0.05s;
     }
 
     .btn:active {
-      transform: scale(0.97);
-      background: #334155;
+      transform: scale(0.98);
+      background: var(--card-hover);
     }
 
     .btn-primary {
       background: #0284c7;
-      border-color: #0ea5e9;
+      border-color: #38bdf8;
+    }
+
+    .btn-primary:hover {
+      background: #0369a1;
     }
 
     .btn-gold {
       background: #d97706;
-      border-color: #f59e0b;
+      border-color: #fbbf24;
+    }
+
+    .btn-gold:hover {
+      background: #b45309;
     }
 
     .tools-grid {
@@ -189,7 +190,7 @@
       margin-bottom: 12px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .tools-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -202,9 +203,20 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 3px;
-      background: #1e293b;
+      background: #1b283f;
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+
+    .tool-btn:hover {
+      background: #253754;
+      border-color: var(--accent-cyan);
+    }
+
+    .tool-btn:active {
+      transform: scale(0.97);
+      background: #334466;
     }
 
     .tool-btn b {
@@ -217,29 +229,31 @@
       font-size: 0.68rem;
       color: var(--text-muted);
       pointer-events: none;
+      line-height: 1.3;
     }
 
     .log-container {
       flex: 1;
-      background: #060911;
-      border-radius: 6px;
-      padding: 10px;
+      background: #050811;
+      border-radius: 8px;
+      padding: 12px;
       overflow-y: auto;
       border: 1px solid #1e293b;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-height: 160px;
-      max-height: 380px;
+      min-height: 180px;
+      max-height: 400px;
       -webkit-overflow-scrolling: touch;
     }
 
     .log-item {
-      background: #111827;
+      background: #141f33;
       border-left: 4px solid var(--accent-cyan);
-      padding: 8px 10px;
+      padding: 9px 11px;
       border-radius: 4px;
-      font-size: 0.8rem;
+      font-size: 0.81rem;
+      animation: fadeIn 0.25s ease;
     }
 
     .log-item.gold { border-left-color: var(--accent-gold); }
@@ -248,20 +262,22 @@
 
     .log-title {
       font-weight: 600;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       color: var(--accent-cyan);
+      display: flex;
+      justify-content: space-between;
     }
 
     .log-detail {
-      color: #e2e8f0;
-      line-height: 1.4;
+      color: #cbd5e1;
+      line-height: 1.45;
     }
 
     .log-physics {
-      margin-top: 4px;
+      margin-top: 5px;
       padding-top: 4px;
-      border-top: 1px dashed #1f2937;
-      font-size: 0.72rem;
+      border-top: 1px dashed #28374d;
+      font-size: 0.74rem;
       color: var(--accent-gold);
     }
 
@@ -271,7 +287,7 @@
 
     .form-group label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
       margin-bottom: 6px;
     }
@@ -281,19 +297,25 @@
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 0.88rem;
       outline: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: var(--accent-cyan);
     }
 
     .result-card {
       margin-top: 12px;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       display: none;
-      font-size: 0.82rem;
-      line-height: 1.45;
+      font-size: 0.83rem;
+      line-height: 1.5;
+      animation: fadeIn 0.3s ease;
     }
 
     .result-card.success {
@@ -308,11 +330,10 @@
       color: #fecaca;
     }
 
-    /* Modal Reference */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0, 0, 0, 0.88);
       display: none;
       align-items: center;
       justify-content: center;
@@ -323,12 +344,12 @@
     .modal-content {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      max-width: 960px;
+      border-radius: 12px;
+      max-width: 980px;
       width: 100%;
       max-height: 88vh;
       overflow-y: auto;
-      padding: 16px;
+      padding: 18px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -344,7 +365,7 @@
     .matrix-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.76rem;
+      font-size: 0.77rem;
       color: #cbd5e1;
     }
 
@@ -356,7 +377,7 @@
     }
 
     .matrix-table th {
-      background: #1e293b;
+      background: #16243b;
       color: var(--accent-cyan);
       position: sticky;
       top: 0;
@@ -364,46 +385,51 @@
     }
 
     .svg-thumb-wrap {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 6px;
       border: 1px solid #475569;
-      background: #0f172a;
+      background: #090e1b;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .svg-thumb-wrap:hover {
+      transform: scale(1.12);
+      border-color: var(--accent-cyan);
     }
 
     .svg-thumb-wrap svg {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       pointer-events: none;
     }
 
-    /* Lightbox Preview */
     .img-preview-box {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #0f172a;
+      background: #0b1323;
       border: 2px solid var(--accent-cyan);
-      border-radius: 10px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 16px;
       z-index: 10000;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.85);
-      width: 300px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      width: 310px;
       text-align: center;
     }
 
     .img-preview-box .large-svg-wrap {
       width: 200px;
       height: 200px;
-      margin: 0 auto 10px;
-      background: #090d16;
+      margin: 0 auto 12px;
+      background: #050811;
       border-radius: 8px;
       border: 1px solid #334155;
       display: flex;
@@ -415,14 +441,14 @@
       width: 170px;
       height: 170px;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-
-  <!-- iPad/手機運行狀態提示條 -->
-  <div id="ios-status-bar">
-    ⚠️ 系統啟動中：若未轉為綠色「環境正常」，請勿使用「檔案」App 快速預覽，請長按檔案點「分享」並選擇「Safari」開啟！
-  </div>
 
   <header>
     <div class="title-group">
@@ -430,15 +456,19 @@
     </div>
     <div class="score-badge">
       <span>已破案: <b id="solved-count">0</b></span>
+      <span>正確率: <b id="accuracy-rate">0%</b></span>
       <span>連勝: <b id="streak-count">0</b></span>
-      <button type="button" class="btn btn-gold" id="btn-open-guide" style="padding:4px 8px; font-size:0.75rem;">📊 礦物特徵圖譜</button>
+      <button type="button" class="btn btn-gold" id="btn-open-guide" style="padding:4px 10px; font-size:0.76rem;">📊 20大礦物圖譜</button>
     </div>
   </header>
 
   <div class="main-layout">
-    <!-- Left Panel: 當前樣品 -->
+    <!-- Left Panel: 當前盲盒標本 -->
     <div class="panel">
-      <div class="panel-title">📦 當前盲盒標本</div>
+      <div class="panel-title">
+        <span>📦 當前盲盒標本</span>
+        <span style="font-size:0.72rem; color:var(--accent-cyan);" id="pool-status">過半防重複隊列作用中</span>
+      </div>
       <div class="specimen-display">
         <div style="font-size:0.75rem; color:var(--text-muted);">未知地下岩芯樣品</div>
         <div class="specimen-code" id="sample-id">#SP-01</div>
@@ -449,17 +479,19 @@
         🎲 抽取新盲盒標本
       </button>
 
-      <div style="font-size:0.74rem; color:var(--text-muted); line-height:1.45; margin-top:auto; background:rgba(0,0,0,0.25); padding:8px; border-radius:6px;">
-        <b>競賽鑑別守則：</b><br>
-        1. 依硬度分水嶺（玻璃 5.5 / 鋼刀 5.0 / 銅幣 3.5 / 指甲 2.5）縮小範圍。<br>
-        2. 放大鏡確認解理面反光或貝殼斷口。<br>
-        3. 特異功能：強磁性、雙折射、滑膩感、異向硬度。
+      <div style="font-size:0.74rem; color:var(--text-muted); line-height:1.45; margin-top:auto; background:rgba(0,0,0,0.25); padding:10px; border-radius:6px; border:1px solid #1e293b;">
+        <b>地質偵探操作規範：</b><br>
+        1. 劃刻測試確立硬度分水嶺（玻璃 5.5 / 鋼刀 5.0 / 銅幣 3.5 / 指甲 2.5）。<br>
+        2. 放大鏡微觀分析解理弱面夾角 vs 貝殼斷口。<br>
+        3. 驗證強磁性、雙折射、滑膩感與異向硬度等特異標誌。
       </div>
     </div>
 
-    <!-- Center Panel: 測試工具台 -->
+    <!-- Center Panel: 9大工具實驗操作台 -->
     <div class="panel">
-      <div class="panel-title">🛠️ 物理與化學檢測工具台（點選調用）</div>
+      <div class="panel-title">
+        <span>🛠️ 物理與化學檢測工具台（點擊調用）</span>
+      </div>
       
       <div class="tools-grid">
         <button type="button" class="btn tool-btn" data-tool="glass">
@@ -479,12 +511,12 @@
 
         <button type="button" class="btn tool-btn" data-tool="streak">
           <b>⚪ 白瓷板條痕</b>
-          <span>消除表面色測定粉末</span>
+          <span>測定固有粉末色</span>
         </button>
 
         <button type="button" class="btn tool-btn" data-tool="lens">
-          <b>🔍 放大鏡看解理/斷口</b>
-          <span>觀察弱面夾角或弧紋</span>
+          <b>🔍 放大鏡解理/斷口</b>
+          <span>觀察弱面、夾角或弧紋</span>
         </button>
 
         <button type="button" class="btn tool-btn" data-tool="magnet">
@@ -508,17 +540,21 @@
         </button>
       </div>
 
-      <div class="panel-title" style="margin-top:6px;">📋 即時觀測記錄與客觀物理現象日誌</div>
+      <div class="panel-title" style="margin-top:6px;">
+        <span>📋 即時觀測記錄與客觀物理現象日誌</span>
+      </div>
       <div class="log-container" id="test-logs">
-        <div style="color:var(--text-muted); font-size:0.8rem; text-align:center; padding:15px;">
-          請使用上方工具台對當前樣品進行測試，物理與化學實驗現象將呈現在此處。
+        <div style="color:var(--text-muted); font-size:0.8rem; text-align:center; padding:18px;">
+          請使用上方工具台對當前樣品進行測試，物理與化學實驗現象將客觀呈現在此處。
         </div>
       </div>
     </div>
 
-    <!-- Right Panel: 推斷結案 -->
+    <!-- Right Panel: 推斷結案提交 -->
     <div class="panel">
-      <div class="panel-title">📝 鑑定論證與結案</div>
+      <div class="panel-title">
+        <span>📝 鑑定論證與結案</span>
+      </div>
       
       <div class="form-group">
         <label>推斷定名的礦物（20大核心庫）：</label>
@@ -563,53 +599,39 @@
     </div>
   </div>
 
-  <!-- Modal Reference: 20 Minerals SVG Matrix -->
   <div class="modal-overlay" id="guide-modal">
     <div class="modal-content" id="modal-content">
       <div class="modal-header">
-        <h2 style="color:var(--accent-cyan); font-size:1.05rem;">📊 20大核心礦物離線圖譜與特徵矩陣</h2>
-        <button type="button" class="btn" id="btn-close-guide" style="padding:4px 8px;">關閉</button>
+        <h2 style="color:var(--accent-cyan); font-size:1.05rem;">📊 20大核心礦物離線圖譜與物理特徵速查矩陣</h2>
+        <button type="button" class="btn" id="btn-close-guide" style="padding:4px 10px;">關閉</button>
       </div>
       <table class="matrix-table">
         <thead>
           <tr>
-            <th style="width: 54px; text-align:center;">晶形</th>
+            <th style="width: 52px; text-align:center;">晶形</th>
             <th>礦物名稱</th>
-            <th>化學分類</th>
+            <th>化學類別</th>
             <th>硬度</th>
             <th>破裂特徵</th>
             <th>條痕顏色</th>
-            <th>關鍵排他標誌</th>
+            <th>關鍵排他性標誌</th>
           </tr>
         </thead>
         <tbody id="matrix-tbody">
-          <!-- Dynamically Generated -->
+          <!-- Dynamically Generated from mineralDB -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Lightbox SVG Preview -->
   <div class="img-preview-box" id="lightbox-box">
     <div class="large-svg-wrap" id="lightbox-svg-target"></div>
-    <div id="lightbox-caption" style="font-size:0.85rem; color:var(--accent-gold); font-weight:600;"></div>
-    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">點選下方按鈕關閉預覽</div>
+    <div id="lightbox-caption" style="font-size:0.88rem; color:var(--accent-gold); font-weight:600;"></div>
+    <div style="font-size:0.75rem; color:var(--text-muted); margin-top:3px;">點選下方按鈕關閉預覽</div>
     <button type="button" class="btn" style="margin-top:10px; width:100%;" id="btn-close-lightbox">關閉預覽</button>
   </div>
 
   <script>
-    // 立即向頂部指示條報告腳本已啟動
-    (function checkJS() {
-      var bar = document.getElementById("ios-status-bar");
-      if (bar) {
-        bar.style.background = "#064e3b";
-        bar.style.color = "#6ee7b7";
-        bar.style.borderColor = "#059669";
-        bar.innerHTML = "✅ iPad / 行動瀏覽器環境正常，進階排查終端已就緒！";
-      }
-    })();
-
-    // 20 種核心礦物離線原生 SVG 向量圖
     function getMineralSVG(name) {
       switch(name) {
         case "石英":
@@ -667,7 +689,7 @@
         scratchedByKnife: false,
         scratchedByNail: false,
         streak: "無色至白色粉末",
-        lensObs: "斷口處呈現如破碎啤酒瓶底般的平滑同心圓弧狀波紋，表面無任何平整反光的幾何解理弱面。",
+        lensObs: "斷口處呈現如破碎啤酒瓶底般的平滑同心圓弧狀波紋，晶體表面看不到任何平整的幾何解理平面。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
@@ -687,7 +709,7 @@
         magnet: false,
         hclBlock: false,
         hclPowder: false,
-        special: "轉動樣品時，可在解理面上看到大面積平整階梯反光閃光。",
+        special: "轉動樣品時，可在解理面上看到大面積平整反光閃光。",
         deduction: "硬度大於 5.5（劃傷玻璃）；具有兩組近 90° 的完全解理面與肉紅色外觀，酸測試不反應。"
       },
       {
@@ -731,7 +753,7 @@
         scratchedByKnife: true,
         scratchedByNail: true,
         streak: "白色粉末",
-        lensObs: "發育一組極完全解理，極易用小刀沿層面分層剝離出大面積平整透明的薄膜。",
+        lensObs: "發育一組極完全解理，極易用刀片沿層面分層剝離出大面積平整透明的薄膜。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
@@ -747,11 +769,11 @@
         scratchedByKnife: false,
         scratchedByNail: false,
         streak: "無色至極淺綠灰色粉末",
-        lensObs: "長柱狀晶體橫截面上，清楚可見兩組解理面相交，其夾角呈現約 56° 與 124° 的菱形交角。",
+        lensObs: "長柱狀晶體橫截面上，清楚可見兩組解理面相交，其夾角呈現約 56° 與 124° 的菱形鈍角/銳角對稱。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
-        special: "橫向碎片橫斷面多呈菱形或斜六邊形，解理夾角非 90°。",
+        special: "橫向打碎碎片橫斷面多呈菱形或斜六邊形，解理夾角非 90°。",
         deduction: "長柱狀深色晶體；最核心的排他性標誌是兩組完全解理交角約為 56°/124°（與輝石的近 90° 明確區分）。"
       },
       {
@@ -763,7 +785,7 @@
         scratchedByKnife: false,
         scratchedByNail: false,
         streak: "白色粉末",
-        lensObs: "粒狀聚集，晶粒界面多呈不規則彎曲，斷口粗糙或微具貝殼狀，看不到平整的反光解理面。",
+        lensObs: "粒狀聚集，晶粒界面多呈不規則彎曲，斷口粗糙或微具貝殼狀，完全看不到平整的反光解理面。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
@@ -779,7 +801,7 @@
         scratchedByKnife: true,
         scratchedByNail: false,
         streak: "白色粉末",
-        lensObs: "發育三組完全解理，各解理面相交約 75°，碎塊永遠呈傾斜菱面體幾何形態。",
+        lensObs: "發育三組完全解理，各解理面相交約 75°，無論外力敲擊何等細碎，碎塊永遠呈傾斜菱面體幾何形態。",
         magnet: false,
         hclBlock: true,
         hclPowder: true,
@@ -799,7 +821,7 @@
         magnet: false,
         hclBlock: false,
         hclPowder: true,
-        special: "常溫整塊原石滴冷酸無氣泡反應；將其置於研缽中刮研成細粉後滴酸，緩慢析出細小氣泡。",
+        special: "常溫整塊原石滴冷酸無氣泡反應；將其置於研缽中用力刮研成細粉後滴酸，緩慢析出細小氣泡。",
         deduction: "硬度 3.5–4；菱面體解理；核心排他點：原塊滴冷稀鹽酸無反應，必須刮成粉末後才起泡。"
       },
       {
@@ -847,7 +869,7 @@
         magnet: false,
         hclBlock: false,
         hclPowder: false,
-        special: "樣品乾燥時具備顯著的毛細吸水性，滴水時會吸附表面，散發特徵性的泥土腥味。",
+        special: "樣品乾燥時具備顯著的毛細吸水性，貼在舌尖或滴水時會吸附表面，散發特徵性的泥土腥味。",
         deduction: "土狀光澤，質地極軟易擦粉；具備強烈親水吸附性並伴隨泥土氣味，長石風化最終產物。"
       },
       {
@@ -859,7 +881,7 @@
         scratchedByKnife: false,
         scratchedByNail: false,
         streak: "無色至白色粉末",
-        lensObs: "呈現極為標準的菱形十二面體或二十四面體幾何晶面；受力無特定方向解理，斷口不平整。",
+        lensObs: "呈現極為標準的菱形十二面體或二十四面體幾何晶面；受力無特定方向解理，斷口呈不平整階梯弧狀。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
@@ -879,7 +901,7 @@
         magnet: false,
         hclBlock: false,
         hclPowder: false,
-        special: "展現極端特異的『異向硬度』：沿刀片長度方向刻劃，鋼刀能劃動（硬度約 4.5）；垂直長度方向刻劃，鋼刀打滑且能割傷玻璃（硬度約 7）。",
+        special: "展現極端特異的『異向硬度』：沿著刀片長度方向刻劃，鋼刀能劃動（硬度約 4.5）；垂直於長度方向刻劃，鋼刀打滑且能割傷玻璃（硬度約 7）。",
         deduction: "藍色扁平刀片狀晶形；具備標誌性的異向硬度（平行柱軸 4.5，垂直柱軸 7），區域變質相代表。"
       },
       {
@@ -927,7 +949,7 @@
         magnet: true,
         hclBlock: false,
         hclPowder: false,
-        special: "當強力磁鐵靠近樣品時，磁鐵與樣品產生強勁的吸附拉力，能直接被磁鐵吸起或吸附鋼針。",
+        special: "當強力磁鐵靠近樣品時，樣品與磁鐵產生強勁的吸附吸力，甚至能直接被磁鐵吸起固定。",
         deduction: "硬度約 6 能刻傷玻璃；條痕呈黑色；核心必殺標誌：具備強烈天然感應磁性，吸附鐵質。"
       },
       {
@@ -939,7 +961,7 @@
         scratchedByKnife: false,
         scratchedByNail: false,
         streak: "鮮明櫻桃紅色至暗紅棕色粉末",
-        lensObs: "斷面呈參差狀或腎狀、鮞狀微粒集合，局部呈金屬光澤薄鱗片狀。",
+        lensObs: "斷面呈參差狀或腎狀、鮞狀微粒集合，局部呈金屬光澤薄鱗片狀（鏡鐵礦相）。",
         magnet: false,
         hclBlock: false,
         hclPowder: false,
@@ -975,70 +997,49 @@
         magnet: false,
         hclBlock: false,
         hclPowder: false,
-        special: "硬度介於銅幣與玻璃之間，指甲劃不動但鋼刀可輕易刻劃；在紫外線燈照射下激發強烈螢光。",
+        special: "硬度介於銅幣與玻璃之間，指甲劃不動但鋼刀可輕易刻劃；在紫外線長波燈照射下激發強烈螢光。",
         deduction: "莫氏標尺 4 號標準；四組八面體完全解理；玻璃光澤，綠/紫色立方晶體，無酸反應。"
       }
     ];
 
     var currentSample = null;
     var solvedCount = 0;
+    var totalSubmissions = 0;
     var streakCount = 0;
 
-    function renderMatrixTable() {
-      var tbody = document.getElementById("matrix-tbody");
-      tbody.innerHTML = "";
-      mineralDB.forEach(function(min) {
-        var tr = document.createElement("tr");
-        var svgCode = getMineralSVG(min.name);
-        tr.innerHTML = '<td style="text-align:center;">' +
-          '<div class="svg-thumb-wrap" data-lightbox-name="' + min.name + '" data-lightbox-en="' + min.en + '">' +
-            svgCode +
-          '</div>' +
-        '</td>' +
-        '<td><b>' + min.name + '</b><br><span style="font-size:0.7rem; color:var(--text-muted);">' + min.en + '</span></td>' +
-        '<td>' + getMineralGroup(min.name) + '</td>' +
-        '<td><b>' + min.hardness + '</b></td>' +
-        '<td>' + getCleavageDesc(min.name) + '</td>' +
-        '<td>' + min.streak + '</td>' +
-        '<td style="font-size:0.72rem;">' + min.deduction + '</td>';
-        tbody.appendChild(tr);
-      });
-    }
+    // 歷史記憶隊列：長度為 10（20 種核心礦物的一半）
+    var recentQueue = [];
+    var RECENT_LIMIT = Math.floor(mineralDB.length / 2); // 10
 
-    function getMineralGroup(name) {
-      if (["石英", "正長石/鉀長石", "斜長石", "黑雲母", "白雲母", "角閃石", "橄欖石", "高嶺石", "石榴子石", "藍晶石", "滑石", "蛇紋石"].indexOf(name) !== -1) return "矽酸鹽類";
-      if (["方解石", "白雲石"].indexOf(name) !== -1) return "碳酸鹽類";
-      if (name === "石膏") return "硫酸鹽類";
-      if (["石鹽", "螢石"].indexOf(name) !== -1) return "鹵化物類";
-      if (["磁鐵礦", "赤鐵礦"].indexOf(name) !== -1) return "氧化物類";
-      if (name === "黃鐵礦") return "硫化物類";
-      return "其他";
-    }
+    function pickNextMineralIndex() {
+      var candidates = [];
+      for (var i = 0; i < mineralDB.length; i++) {
+        if (recentQueue.indexOf(i) === -1) {
+          candidates.push(i);
+        }
+      }
 
-    function getCleavageDesc(name) {
-      if (["石英", "橄欖石", "石榴子石", "磁鐵礦", "赤鐵礦", "黃鐵礦"].indexOf(name) !== -1) return "無解理 / 斷口發育";
-      if (["黑雲母", "白雲母", "石膏", "藍晶石", "滑石"].indexOf(name) !== -1) return "一組極完全解理";
-      if (["正長石/鉀長石", "斜長石", "角閃石"].indexOf(name) !== -1) return "兩組完全解理";
-      if (["方解石", "白雲石", "石鹽"].indexOf(name) !== -1) return "三組完全解理 (菱面/立方)";
-      if (name === "螢石") return "四組八面體解理";
-      return "土狀 / 隱晶質斷口";
-    }
+      // 極限保護：若候選池為空，備用方案排除最新一個
+      if (candidates.length === 0) {
+        var lastOne = recentQueue.length > 0 ? recentQueue[recentQueue.length - 1] : -1;
+        for (var j = 0; j < mineralDB.length; j++) {
+          if (j !== lastOne) candidates.push(j);
+        }
+      }
 
-    function openLightbox(name, en) {
-      var box = document.getElementById("lightbox-box");
-      var target = document.getElementById("lightbox-svg-target");
-      target.innerHTML = getMineralSVG(name);
-      document.getElementById("lightbox-caption").innerText = name + " (" + en + ")";
-      box.style.display = "block";
-    }
+      var pickedIdx = candidates[Math.floor(Math.random() * candidates.length)];
 
-    function closeLightbox() {
-      document.getElementById("lightbox-box").style.display = "none";
+      recentQueue.push(pickedIdx);
+      if (recentQueue.length > RECENT_LIMIT) {
+        recentQueue.shift();
+      }
+
+      return pickedIdx;
     }
 
     function drawNewSample() {
-      var randomIndex = Math.floor(Math.random() * mineralDB.length);
-      currentSample = mineralDB[randomIndex];
+      var nextIdx = pickNextMineralIndex();
+      currentSample = mineralDB[nextIdx];
 
       var randomCode = "SP-" + Math.floor(10 + Math.random() * 90);
       document.getElementById("sample-id").innerText = "#" + randomCode;
@@ -1054,6 +1055,17 @@
       var resBox = document.getElementById("result-box");
       resBox.style.display = "none";
       resBox.className = "result-card";
+    }
+
+    function updateScoreBoard() {
+      document.getElementById("solved-count").innerText = solvedCount;
+      document.getElementById("streak-count").innerText = streakCount;
+
+      var accuracy = 0;
+      if (totalSubmissions > 0) {
+        accuracy = Math.round((solvedCount / totalSubmissions) * 100);
+      }
+      document.getElementById("accuracy-rate").innerText = accuracy + "%";
     }
 
     function addLog(title, detail, physics, colorClass) {
@@ -1155,21 +1167,21 @@
         return;
       }
 
+      totalSubmissions++;
       var isCorrect = (predicted === currentSample.name);
 
       resBox.style.display = "block";
       if (isCorrect) {
         solvedCount++;
         streakCount++;
-        document.getElementById("solved-count").innerText = solvedCount;
-        document.getElementById("streak-count").innerText = streakCount;
+        updateScoreBoard();
 
         resBox.className = "result-card success";
         resBox.innerHTML = "<b>🎯 判定吻合！該標本確為【" + currentSample.name + " (" + currentSample.en + ")】</b><br><br>" +
           "<b>競賽級論證依據：</b><br>" + currentSample.deduction;
       } else {
         streakCount = 0;
-        document.getElementById("streak-count").innerText = streakCount;
+        updateScoreBoard();
 
         resBox.className = "result-card error";
         resBox.innerHTML = "<b>❌ 推斷偏差！你判定為【" + predicted + "】，但真實樣品是【" + currentSample.name + "】</b><br><br>" +
@@ -1177,7 +1189,59 @@
       }
     }
 
-    // iPad / 行動端最穩健的事件委派（相容 iOS Safari 及 Chrome）
+    function renderMatrixTable() {
+      var tbody = document.getElementById("matrix-tbody");
+      tbody.innerHTML = "";
+      mineralDB.forEach(function(min) {
+        var tr = document.createElement("tr");
+        var svgCode = getMineralSVG(min.name);
+        tr.innerHTML = '<td style="text-align:center;">' +
+          '<div class="svg-thumb-wrap" data-lightbox-name="' + min.name + '" data-lightbox-en="' + min.en + '">' +
+            svgCode +
+          '</div>' +
+        '</td>' +
+        '<td><b>' + min.name + '</b><br><span style="font-size:0.7rem; color:var(--text-muted);">' + min.en + '</span></td>' +
+        '<td>' + getMineralGroup(min.name) + '</td>' +
+        '<td><b>' + min.hardness + '</b></td>' +
+        '<td>' + getCleavageDesc(min.name) + '</td>' +
+        '<td>' + min.streak + '</td>' +
+        '<td style="font-size:0.72rem;">' + min.deduction + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    function getMineralGroup(name) {
+      if (["石英", "正長石/鉀長石", "斜長石", "黑雲母", "白雲母", "角閃石", "橄欖石", "高嶺石", "石榴子石", "藍晶石", "滑石", "蛇紋石"].indexOf(name) !== -1) return "矽酸鹽類";
+      if (["方解石", "白雲石"].indexOf(name) !== -1) return "碳酸鹽類";
+      if (name === "石膏") return "硫酸鹽類";
+      if (["石鹽", "螢石"].indexOf(name) !== -1) return "鹵化物類";
+      if (["磁鐵礦", "赤鐵礦"].indexOf(name) !== -1) return "氧化物類";
+      if (name === "黃鐵礦") return "硫化物類";
+      return "其他";
+    }
+
+    function getCleavageDesc(name) {
+      if (["石英", "橄欖石", "石榴子石", "磁鐵礦", "赤鐵礦", "黃鐵礦"].indexOf(name) !== -1) return "無解理 / 斷口發育";
+      if (["黑雲母", "白雲母", "石膏", "藍晶石", "滑石"].indexOf(name) !== -1) return "一組極完全解理";
+      if (["正長石/鉀長石", "斜長石", "角閃石"].indexOf(name) !== -1) return "兩組完全解理";
+      if (["方解石", "白雲石", "石鹽"].indexOf(name) !== -1) return "三組完全解理 (菱面/立方)";
+      if (name === "螢石") return "四組八面體解理";
+      return "土狀 / 隱晶質斷口";
+    }
+
+    function openLightbox(name, en) {
+      var box = document.getElementById("lightbox-box");
+      var target = document.getElementById("lightbox-svg-target");
+      target.innerHTML = getMineralSVG(name);
+      document.getElementById("lightbox-caption").innerText = name + " (" + en + ")";
+      box.style.display = "block";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox-box").style.display = "none";
+    }
+
+    // 全端事件委派：保證桌面、iPad Safari 及手機觸控靈敏相容
     document.addEventListener("click", function(e) {
       var target = e.target;
 
@@ -1205,7 +1269,7 @@
         return;
       }
 
-      // 5. 點擊彈窗外部遮罩關閉
+      // 5. 點擊遮罩關閉彈窗
       if (target.id === "guide-modal") {
         document.getElementById("guide-modal").style.display = "none";
         return;
@@ -1226,7 +1290,7 @@
         return;
       }
 
-      // 8. 9大工具按鈕觸發
+      // 8. 9大工具按鈕點選
       var toolBtn = target.closest(".tool-btn");
       if (toolBtn) {
         var toolName = toolBtn.getAttribute("data-tool");
@@ -1235,7 +1299,6 @@
       }
     });
 
-    // 啟動初始化
     window.onload = function() {
       renderMatrixTable();
       drawNewSample();
