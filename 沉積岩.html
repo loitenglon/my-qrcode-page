@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>地層時空膠囊：沉積岩地質工坊 (無提示競賽版)</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #131d33;
+      --card: #1e293b;
+      --border: #334155;
+      --sand-gold: #f59e0b;
+      --river-blue: #38bdf8;
+      --lime-green: #34d399;
+      --alert-red: #f87171;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      user-select: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .title-box h1 {
+      font-size: 1.25rem;
+      color: var(--sand-gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .title-box .sub {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .mode-switch {
+      display: flex;
+      background: var(--card);
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid var(--border);
+      gap: 2px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mode-btn.active {
+      background: var(--river-blue);
+      color: #0b1120;
+    }
+
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      flex-wrap: wrap;
+    }
+
+    .stats-bar b {
+      color: var(--sand-gold);
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr 340px;
+      gap: 12px;
+      flex: 1;
+    }
+
+    @media (max-width: 980px) {
+      .game-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+
+    .mission-card {
+      background: #1e1b4b;
+      border: 2px dashed #818cf8;
+      border-radius: 8px;
+      padding: 14px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .mission-card .tag {
+      font-size: 0.72rem;
+      background: #4f46e5;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .target-rock-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--sand-gold);
+      letter-spacing: 2px;
+      margin: 4px 0;
+    }
+
+    .step-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .step-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--river-blue);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .opt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .opt-btn {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 8px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.84rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 44px;
+    }
+
+    .opt-btn.active {
+      border-color: var(--river-blue);
+      background: rgba(56, 189, 248, 0.25);
+      color: var(--river-blue);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+    }
+
+    .cooking-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      background: #070a12;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .stage-box {
+      width: 100%;
+      max-width: 320px;
+      height: 250px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #rock-canvas {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      border: 4px solid var(--border);
+      box-shadow: 0 0 25px rgba(0,0,0,0.8);
+      background: #000;
+    }
+
+    .test-toolbar {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .btn-test {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 6px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-test:active {
+      background: #334155;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn-action:active {
+      transform: scale(0.97);
+    }
+
+    .btn-action.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: #475569;
+    }
+
+    .result-box {
+      background: var(--card);
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rock-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--sand-gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rock-en {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .prop-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      border-bottom: 1px dashed #334155;
+      padding: 4px 0;
+    }
+
+    .prop-row span:last-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .eval-feedback {
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .eval-feedback.pass {
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid var(--lime-green);
+      color: #a7f3d0;
+    }
+
+    .eval-feedback.fail {
+      background: rgba(248, 113, 113, 0.15);
+      border: 1px solid var(--alert-red);
+      color: #fecaca;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .btn-rock-choice {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-rock-choice span {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 400;
+      pointer-events: none;
+    }
+
+    .btn-rock-choice:active {
+      border-color: var(--river-blue);
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    .btn-rock-choice.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    .btn-rock-choice.correct-highlight {
+      border-color: var(--lime-green) !important;
+      background: rgba(52, 211, 153, 0.2) !important;
+      color: #a7f3d0 !important;
+    }
+
+    .btn-rock-choice.wrong-highlight {
+      border-color: var(--alert-red) !important;
+      background: rgba(248, 113, 113, 0.2) !important;
+      color: #fecaca !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-box">
+      <h1>⏳ 地層時空膠囊：沉積岩地質工坊</h1>
+      <div class="sub">沉積物源 ✕ 流水動力分選 ✕ 壓實膠結成岩</div>
+    </div>
+
+    <div class="mode-switch">
+      <button type="button" class="mode-btn active" id="btn-mode-forward">🎯 模式一：沉積工程師</button>
+      <button type="button" class="mode-btn" id="btn-mode-reverse">🔍 模式二：神探地層盲盒</button>
+    </div>
+
+    <div class="stats-bar">
+      <span>已破案: <b id="solved-count">0</b></span>
+      <span>正確率: <b id="accuracy-rate">0%</b></span>
+      <span>連勝: <b id="streak-count">0</b></span>
+      <span>最高連勝: <b id="max-streak">0</b></span>
+    </div>
+  </header>
+
+  <div class="game-grid">
+    <!-- 左側面板 -->
+    <div class="panel" id="panel-left">
+      <!-- 模式一任務卡：僅出名稱 -->
+      <div class="mission-card" id="mode1-mission-box">
+        <span class="tag">沉積任務：請膠結出此岩石</span>
+        <div class="target-rock-name" id="target-name">角礫岩</div>
+      </div>
+
+      <!-- 模式二參數卡：僅出原始物源 -->
+      <div class="mission-card" id="mode2-param-box" style="display:none; background:#1e293b; border-color:var(--river-blue); text-align:left;">
+        <span class="tag" style="background:#0284c7;">地層出土原始物源</span>
+        <div style="margin:8px 0; font-size:0.95rem; line-height:1.6;">
+          • <b>原始物源：</b><span id="m2-source" style="color:var(--sand-gold); font-weight:700;">礫級碎石塊</span>
+        </div>
+        <div style="font-size:0.75rem; color:#94a3b8; border-top:1px dashed #334155; padding-top:6px;">
+          💡 提示：動力環境未提供文字！請使用中央<b>顯微鏡</b>（觀察磨圓度）與<b>檢測試劑</b>輔助推斷。
+        </div>
+      </div>
+
+      <!-- 模式一選項控制項：按鈕打亂順序，無小字劇透提示 -->
+      <div id="mode1-controls">
+        <div class="step-box">
+          <div class="step-label">
+            <span>步驟一：沉積源物質選擇</span>
+          </div>
+          <div class="opt-grid">
+            <button type="button" class="opt-btn" data-source="sulfate">硫酸鈣滷水</button>
+            <button type="button" class="opt-btn" data-source="sand">砂級石英粒</button>
+            <button type="button" class="opt-btn" data-source="plant">沼澤森林遺體</button>
+            <button type="button" class="opt-btn" data-source="mud">泥級黏土微粉</button>
+            <button type="button" class="opt-btn active" data-source="gravel">礫級粗石塊</button>
+            <button type="button" class="opt-btn" data-source="halite_brine">氯化鈉滷水</button>
+            <button type="button" class="opt-btn" data-source="calcite" style="grid-column: span 2;">鈣質生物/離子</button>
+          </div>
+        </div>
+
+        <div class="step-box" style="margin-top:8px;">
+          <div class="step-label">步驟二：動力沉積環境選擇</div>
+          <div class="opt-grid">
+            <button type="button" class="opt-btn" data-env="beach">海灘沙洲/河口</button>
+            <button type="button" class="opt-btn active" data-env="collapse">懸崖崩塌/倒石堆</button>
+            <button type="button" class="opt-btn" data-env="arid_playa">乾旱封閉鹽湖</button>
+            <button type="button" class="opt-btn" data-env="quiet_water">平靜深湖/陸棚</button>
+            <button type="button" class="opt-btn" data-env="flood">山洪/河流長流</button>
+            <button type="button" class="opt-btn" data-env="swamp">缺氧停滯沼澤</button>
+            <button type="button" class="opt-btn" data-env="warm_sea" style="grid-column: span 2;">溫暖清澈淺海</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中間顯微鏡面板 -->
+    <div class="panel cooking-center">
+      <div class="panel-title" style="width:100%; justify-content:space-between;">
+        <span>🔬 沉積截面顯微鏡</span>
+        <span style="font-size:0.75rem; color:var(--muted);">放大倍率: 100x</span>
+      </div>
+
+      <div class="stage-box">
+        <canvas id="rock-canvas" width="400" height="400"></canvas>
+      </div>
+
+      <!-- 物理化學測試工具台 -->
+      <div class="test-toolbar">
+        <button type="button" class="btn-test" id="btn-acid">🧪 滴稀鹽酸</button>
+        <button type="button" class="btn-test" id="btn-scratch">🖐️ 指甲刻劃</button>
+      </div>
+
+      <button type="button" class="btn-action" id="btn-main-action">
+        🔨 壓實膠結成岩！
+      </button>
+
+      <div style="font-size:0.75rem; color:var(--muted); text-align:center;">
+        搬運機制決定磨圓度 · 沉積介質決定岩石類別
+      </div>
+    </div>
+
+    <!-- 右側面板 -->
+    <div class="panel">
+      <!-- 模式二快選按鈕 -->
+      <div id="mode2-choices" style="display:none;">
+        <div class="panel-title">🏷️ 請推斷當前標本名稱（限選一次）：</div>
+        <div class="choice-grid" id="choice-container">
+          <button type="button" class="btn-rock-choice" data-guess="conglomerate">礫岩<span>Conglomerate</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="breccia">角礫岩<span>Breccia</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="sandstone">砂岩<span>Sandstone</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="shale">頁岩<span>Shale</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="limestone">石灰岩<span>Limestone</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="gypsum">石膏岩<span>Gypsum Rock</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="halite">石鹽岩<span>Rock Salt</span></button>
+          <button type="button" class="btn-rock-choice" data-guess="coal">煤炭<span>Coal</span></button>
+        </div>
+      </div>
+
+      <div class="panel-title">📋 沉積標本地質檔案</div>
+      <div class="result-box">
+        <div class="rock-title">
+          <span id="out-name">角礫岩</span>
+          <span class="rock-en" id="out-en">Breccia</span>
+        </div>
+        
+        <div class="prop-row">
+          <span style="color:var(--muted);">分類範疇</span>
+          <span id="out-category">粗碎屑沉積岩</span>
+        </div>
+        <div class="prop-row">
+          <span style="color:var(--muted);">結構構造</span>
+          <span id="out-texture">角礫狀結構 · 稜角分明</span>
+        </div>
+        <div class="prop-row">
+          <span style="color:var(--muted);">動力環境機制</span>
+          <span id="out-env">高山懸崖崩塌或斷層倒石堆近源堆積</span>
+        </div>
+        <div class="prop-row">
+          <span style="color:var(--muted);">代表產地/地貌</span>
+          <span id="out-landscape">斷裂破碎帶、懸崖倒石堆</span>
+        </div>
+      </div>
+
+      <div class="eval-feedback" id="eval-box"></div>
+      
+      <button type="button" class="opt-btn" id="btn-next-question" style="display:none; text-align:center; background:#4f46e5; color:#fff; font-weight:700; padding:12px; margin-top:auto;">
+        🎲 抽取下一籤挑戰 ➡️
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function safeSet(id, text) {
+      var el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+
+    // 八大核心沉積岩資料庫（嚴謹對應）
+    var ROCKS = {
+      "conglomerate": {
+        name: "礫岩", en: "Conglomerate", category: "粗碎屑沉積岩",
+        texture: "礫狀結構，含磨圓度良好的圓潤卵石 (>2mm)",
+        env: "山洪、湍急河道高能量流水長途搬運磨圓",
+        landscape: "丹霞山礫岩崖壁",
+        recipe: { source: "gravel", env: "flood" },
+        sourceLabel: "礫級粗石塊",
+        acidReaction: false, scratchReaction: false,
+        desc: "大顆鵝卵石在湍急河流中長途翻滾碰撞，稜角全被磨平拋光，被砂泥膠結物黏合而成。"
+      },
+      "breccia": {
+        name: "角礫岩", en: "Breccia", category: "粗碎屑沉積岩",
+        texture: "角礫狀結構，碎屑尖銳且稜角分明 (>2mm)",
+        env: "斷層崖崩塌、高山滑坡近源重力堆積",
+        landscape: "懸崖山腳倒石堆、斷裂破碎帶",
+        recipe: { source: "gravel", env: "collapse" },
+        sourceLabel: "礫級粗石塊",
+        acidReaction: false, scratchReaction: false,
+        desc: "岩壁受寒凍風化崩解跌落，未經河流長途搬運，在山腳原地迅速被膠結固化，保留了鋒利稜角。"
+      },
+      "sandstone": {
+        name: "砂岩", en: "Sandstone", category: "中碎屑沉積岩",
+        texture: "砂狀結構 (0.063~2mm)，手感如砂紙粗糙",
+        env: "河口三角洲、海灘沙洲波浪淘洗沉積",
+        landscape: "美國大峽谷砂岩層、張家界石柱",
+        recipe: { source: "sand", env: "beach" },
+        sourceLabel: "砂級石英粒",
+        acidReaction: false, scratchReaction: false,
+        desc: "長石雲母在長途水流中風化殆盡，唯獨硬度為 7 的抗磨石英砂粒富集，被天然膠結物膠結。"
+      },
+      "shale": {
+        name: "頁岩", en: "Shale", category: "細碎屑沉積岩",
+        texture: "泥質微粒結構 (<0.063mm)，具顯著片狀頁理",
+        env: "開闊平靜深湖、潟湖、深海陸棚靜水",
+        landscape: "頁岩氣儲層、四川盆地地層",
+        recipe: { source: "mud", env: "quiet_water" },
+        sourceLabel: "泥級黏土微粉",
+        acidReaction: false, scratchReaction: false,
+        desc: "最細微的黏土粉在平靜無波的水體中緩慢飄落沉降，受垂直重壓排列成如書頁般的薄片。"
+      },
+      "limestone": {
+        name: "石灰岩", en: "Limestone", category: "碳酸鹽岩 (化學/生化)",
+        texture: "隱晶質至生物碎屑結構，主要含方解石",
+        env: "熱帶溫暖清澈淺海、珊瑚礁坪",
+        landscape: "桂林山水喀斯特峰林、雲南石林",
+        recipe: { source: "calcite", env: "warm_sea" },
+        sourceLabel: "鈣質生物/離子",
+        acidReaction: true, scratchReaction: false,
+        desc: "珊瑚貝類骨骼堆積或海水中 CaCO₃ 直接化學析出，遇 5% 稀鹽酸劇烈沸騰起泡！"
+      },
+      "gypsum": {
+        name: "石膏岩", en: "Gypsum Rock", category: "化學蒸發岩",
+        texture: "細晶緻密至纖維狀集合體，硬度 2",
+        env: "封閉乾旱內陸盆地、強烈蒸發海灣潟湖",
+        landscape: "乾涸鹽湖、大型石膏礦床",
+        recipe: { source: "sulfate", env: "arid_playa" },
+        sourceLabel: "硫酸鈣滷水",
+        acidReaction: false, scratchReaction: true,
+        desc: "烈日暴曬使水體濃縮，硫酸鈣率先過飽和結晶析出；質地極軟，手指甲能輕易刮出白痕。"
+      },
+      "halite": {
+        name: "石鹽岩", en: "Rock Salt", category: "化學蒸發岩",
+        texture: "立方體晶粒結構，味鹹易溶於水",
+        env: "極度乾旱內陸鹽湖完全蒸發乾涸階段",
+        landscape: "察爾汗鹽湖、柴達木盆地鹽田",
+        recipe: { source: "halite_brine", env: "arid_playa" },
+        sourceLabel: "氯化鈉滷水",
+        acidReaction: false, scratchReaction: false,
+        desc: "蒸發到了極限，氯化鈉 (NaCl) 大量結晶析出形成厚層岩鹽，呈天然立方體晶形。"
+      },
+      "coal": {
+        name: "煤炭", en: "Coal", category: "有機沉積岩",
+        texture: "黑色均質條帶狀，質輕具可燃性",
+        env: "低窪潮濕泥炭沼澤、缺氧停滯環境",
+        landscape: "石炭紀森林化石地層、山西煤田",
+        recipe: { source: "plant", env: "swamp" },
+        sourceLabel: "沼澤森林遺體",
+        acidReaction: false, scratchReaction: false,
+        desc: "遠古森林倒伏在沼澤泥炭中，隔絕空氣未腐爛，經千萬年深埋脫水熱演化而成。"
+      }
+    };
+
+    // 嚴格確保包含 breccia（角礫岩）在內的 8 大岩石陣列
+    var ROCK_KEYS = ["conglomerate", "breccia", "sandstone", "shale", "limestone", "gypsum", "halite", "coal"];
+
+    var currentMode = "forward";
+    var solvedCount = 0;
+    var totalAttempts = 0;
+    var streakCount = 0;
+    var maxStreak = 0;
+    var hasAnswered = false;
+
+    // 洗牌防重複隊列 (長度 4)
+    var recentQueue = [];
+    var MAX_RECENT = 4;
+
+    var currentTargetKey = "breccia";
+    var mode2QuestionKey = "breccia";
+
+    var playerRecipe = {
+      source: "gravel",
+      env: "collapse"
+    };
+
+    var canvas = document.getElementById("rock-canvas");
+    var ctx = canvas ? canvas.getContext("2d") : null;
+
+    function pickNextRockKey() {
+      var candidates = [];
+      for (var i = 0; i < ROCK_KEYS.length; i++) {
+        if (recentQueue.indexOf(ROCK_KEYS[i]) === -1) {
+          candidates.push(ROCK_KEYS[i]);
+        }
+      }
+      if (candidates.length === 0) {
+        var last = recentQueue[recentQueue.length - 1];
+        for (var j = 0; j < ROCK_KEYS.length; j++) {
+          if (ROCK_KEYS[j] !== last) candidates.push(ROCK_KEYS[j]);
+        }
+      }
+      var pick = candidates[Math.floor(Math.random() * candidates.length)];
+      recentQueue.push(pick);
+      if (recentQueue.length > MAX_RECENT) {
+        recentQueue.shift();
+      }
+      return pick;
+    }
+
+    function initMode1Question() {
+      hasAnswered = false;
+      currentTargetKey = pickNextRockKey();
+      var rock = ROCKS[currentTargetKey];
+
+      safeSet("target-name", rock.name);
+
+      var actBtn = document.getElementById("btn-main-action");
+      actBtn.classList.remove("disabled");
+      actBtn.innerText = "🔨 壓實膠結成岩！";
+
+      document.getElementById("eval-box").style.display = "none";
+      document.getElementById("btn-next-question").style.display = "none";
+
+      safeSet("out-name", "？？？");
+      safeSet("out-en", "待工程師配方合成");
+      safeSet("out-category", "---");
+      safeSet("out-texture", "---");
+      safeSet("out-env", "---");
+      safeSet("out-landscape", "膠結後解鎖");
+
+      if (ctx) ctx.clearRect(0, 0, 400, 400);
+    }
+
+    function initMode2Question() {
+      hasAnswered = false;
+      mode2QuestionKey = pickNextRockKey(); // 確保必定隨機涵蓋 breccia
+      var rock = ROCKS[mode2QuestionKey];
+
+      // 模式二僅顯示物源名稱，無任何粒徑或動力提示
+      safeSet("m2-source", rock.sourceLabel);
+
+      renderCanvasTexture(mode2QuestionKey);
+
+      var choiceBtns = document.querySelectorAll(".btn-rock-choice");
+      choiceBtns.forEach(function(b) {
+        b.classList.remove("disabled", "correct-highlight", "wrong-highlight");
+      });
+
+      safeSet("out-name", "？？？");
+      safeSet("out-en", "Unknown Sedimentary Rock");
+      safeSet("out-category", "待推斷");
+      safeSet("out-texture", "請透過中央顯微鏡觀察");
+      safeSet("out-env", "請由水動力與試劑推斷");
+      safeSet("out-landscape", "判定正確後解鎖");
+
+      document.getElementById("eval-box").style.display = "none";
+      document.getElementById("btn-next-question").style.display = "none";
+    }
+
+    // 嚴格地質邏輯配方解析
+    function resolveCraftedKey(rec) {
+      if (rec.source === "gravel") {
+        return (rec.env === "flood") ? "conglomerate" : (rec.env === "collapse" ? "breccia" : "breccia");
+      }
+      if (rec.source === "sand") return "sandstone";
+      if (rec.source === "mud") return "shale";
+      if (rec.source === "calcite") return "limestone";
+      if (rec.source === "sulfate") return "gypsum";
+      if (rec.source === "halite_brine") return "halite";
+      if (rec.source === "plant") return "coal";
+      return "sandstone";
+    }
+
+    function updateInfoPanel(key) {
+      var rock = ROCKS[key];
+      if (!rock) return;
+      safeSet("out-name", rock.name);
+      safeSet("out-en", rock.en);
+      safeSet("out-category", rock.category);
+      safeSet("out-texture", rock.texture);
+      safeSet("out-env", rock.env);
+      safeSet("out-landscape", rock.landscape);
+    }
+
+    function updateScoreUI() {
+      safeSet("solved-count", solvedCount);
+      safeSet("streak-count", streakCount);
+      safeSet("max-streak", maxStreak);
+
+      var acc = totalAttempts > 0 ? Math.round((solvedCount / totalAttempts) * 100) : 0;
+      safeSet("accuracy-rate", acc + "%");
+    }
+
+    function evaluateMode1() {
+      if (hasAnswered) return;
+      hasAnswered = true;
+
+      totalAttempts++;
+      var crafted = resolveCraftedKey(playerRecipe);
+      var craftedRock = ROCKS[crafted];
+      var targetRock = ROCKS[currentTargetKey];
+
+      var actBtn = document.getElementById("btn-main-action");
+      actBtn.classList.add("disabled");
+      actBtn.innerText = "已成岩（請抽下一籤）";
+
+      renderCanvasTexture(crafted);
+      updateInfoPanel(crafted);
+
+      var evalBox = document.getElementById("eval-box");
+      evalBox.style.display = "block";
+
+      if (crafted === currentTargetKey) {
+        solvedCount++;
+        streakCount++;
+        if (streakCount > maxStreak) maxStreak = streakCount;
+        updateScoreUI();
+
+        evalBox.className = "eval-feedback pass";
+        evalBox.innerHTML = "<b>🎯 膠結成功！成功還原【" + craftedRock.name + "】！</b><br>" + craftedRock.desc;
+      } else {
+        streakCount = 0;
+        updateScoreUI();
+
+        evalBox.className = "eval-feedback fail";
+        evalBox.innerHTML = "<b>❌ 配方偏差！你膠結成了【" + craftedRock.name + "】，但目標是【" + targetRock.name + "】！</b><br><b>環境原理：</b>" + targetRock.desc;
+      }
+
+      document.getElementById("btn-next-question").style.display = "block";
+    }
+
+    function evaluateMode2(guessedKey, clickedBtn) {
+      if (hasAnswered) return;
+      hasAnswered = true;
+
+      totalAttempts++;
+      var targetRock = ROCKS[mode2QuestionKey];
+      var guessedRock = ROCKS[guessedKey];
+
+      var choiceBtns = document.querySelectorAll(".btn-rock-choice");
+      choiceBtns.forEach(function(b) {
+        b.classList.add("disabled");
+        if (b.getAttribute("data-guess") === mode2QuestionKey) {
+          b.classList.add("correct-highlight");
+        }
+      });
+
+      if (guessedKey !== mode2QuestionKey && clickedBtn) {
+        clickedBtn.classList.add("wrong-highlight");
+      }
+
+      updateInfoPanel(mode2QuestionKey);
+
+      var evalBox = document.getElementById("eval-box");
+      evalBox.style.display = "block";
+
+      if (guessedKey === mode2QuestionKey) {
+        solvedCount++;
+        streakCount++;
+        if (streakCount > maxStreak) maxStreak = streakCount;
+        updateScoreUI();
+
+        evalBox.className = "eval-feedback pass";
+        evalBox.innerHTML = "<b>🎉 標本鎖定成功！該岩石正是【" + targetRock.name + " (" + targetRock.en + ")】！</b><br>" + targetRock.desc;
+      } else {
+        streakCount = 0;
+        updateScoreUI();
+
+        evalBox.className = "eval-feedback fail";
+        evalBox.innerHTML = "<b>❌ 判定失誤！你推斷為【" + guessedRock.name + "】，但真實標本是【" + targetRock.name + "】！</b><br><b>成因原理：</b>" + targetRock.desc;
+      }
+
+      document.getElementById("btn-next-question").style.display = "block";
+    }
+
+    // 顯微鏡程序化繪圖（強化角礫岩與礫岩的外觀差別）
+    function renderCanvasTexture(key) {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, 400, 400);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(200, 200, 196, 0, Math.PI * 2);
+      ctx.clip();
+
+      if (key === "conglomerate") {
+        // 圓潤大鵝卵石膠結 (河流長途磨圓，邊緣平滑橢圓)
+        ctx.fillStyle = "#94a3b8";
+        ctx.fillRect(0, 0, 400, 400);
+        var pebbleColors = ["#64748b", "#cbd5e1", "#e2e8f0", "#78716c", "#a8a29e"];
+        for (var i = 0; i < 35; i++) {
+          ctx.fillStyle = pebbleColors[i % pebbleColors.length];
+          ctx.beginPath();
+          var px = Math.random() * 400, py = Math.random() * 400, pr = 22 + Math.random() * 32;
+          ctx.ellipse(px, py, pr, pr * (0.65 + Math.random() * 0.35), Math.random() * Math.PI, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "#334155";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      } else if (key === "breccia") {
+        // 尖銳稜角分明的崩塌碎石 (碎玻璃狀三角形/多邊形，邊角極尖)
+        ctx.fillStyle = "#475569";
+        ctx.fillRect(0, 0, 400, 400);
+        var sharpColors = ["#cbd5e1", "#94a3b8", "#e2e8f0", "#334155", "#64748b"];
+        for (var b = 0; b < 45; b++) {
+          ctx.fillStyle = sharpColors[b % sharpColors.length];
+          drawSharpRock(ctx, Math.random()*400, Math.random()*400, 22 + Math.random()*30);
+        }
+      } else if (key === "sandstone") {
+        // 均勻細砂石英顆粒
+        ctx.fillStyle = "#d97706";
+        ctx.fillRect(0, 0, 400, 400);
+        for (var s = 0; s < 450; s++) {
+          ctx.fillStyle = Math.random() > 0.4 ? "#fef3c7" : "#fde68a";
+          ctx.beginPath();
+          ctx.arc(Math.random()*400, Math.random()*400, 3 + Math.random()*5, 0, Math.PI*2);
+          ctx.fill();
+        }
+      } else if (key === "shale") {
+        // 密集成層的水平頁理條帶
+        ctx.fillStyle = "#334155";
+        ctx.fillRect(0, 0, 400, 400);
+        for (var sh = 0; sh < 35; sh++) {
+          ctx.fillStyle = sh % 2 === 0 ? "#1e293b" : "#475569";
+          ctx.fillRect(0, sh * 12, 400, 7);
+        }
+        ctx.strokeStyle = "#e2e8f0";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(140, 200); ctx.lineTo(260, 200);
+        for (var f = 150; f <= 250; f += 12) {
+          ctx.moveTo(f, 192); ctx.lineTo(f, 208);
+        }
+        ctx.stroke();
+      } else if (key === "limestone") {
+        // 灰色細密基質中散落微小貝殼碎屑
+        ctx.fillStyle = "#64748b";
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.strokeStyle = "#e2e8f0";
+        ctx.lineWidth = 2;
+        for (var c = 0; c < 25; c++) {
+          ctx.beginPath();
+          var cx = Math.random()*400, cy = Math.random()*400;
+          ctx.arc(cx, cy, 10 + Math.random()*15, 0.2, Math.PI);
+          ctx.stroke();
+        }
+      } else if (key === "gypsum") {
+        // 白色纖維與緻密條紋
+        ctx.fillStyle = "#f8fafc";
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 2;
+        for (var g = 0; g < 40; g++) {
+          ctx.beginPath();
+          var gx = Math.random()*400;
+          ctx.moveTo(gx, 0);
+          ctx.lineTo(gx + (Math.random()-0.5)*30, 400);
+          ctx.stroke();
+        }
+      } else if (key === "halite") {
+        // 立方體正交晶格
+        ctx.fillStyle = "#e2e8f0";
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 1.5;
+        for (var hl = 0; hl < 400; hl += 30) {
+          ctx.beginPath(); ctx.moveTo(hl, 0); ctx.lineTo(hl, 400); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(0, hl); ctx.lineTo(400, hl); ctx.stroke();
+        }
+      } else if (key === "coal") {
+        // 黑色炭質條帶
+        ctx.fillStyle = "#020617";
+        ctx.fillRect(0, 0, 400, 400);
+        ctx.fillStyle = "#1e293b";
+        for (var cl = 0; cl < 20; cl++) {
+          ctx.fillRect(0, cl * 20, 400, 6);
+        }
+      }
+
+      ctx.restore();
+    }
+
+    // 專門繪製角礫岩尖銳稜角碎石
+    function drawSharpRock(c, x, y, r) {
+      c.beginPath();
+      var points = 4 + Math.floor(Math.random() * 2);
+      for (var i = 0; i < points; i++) {
+        var angle = (i * 2 * Math.PI) / points;
+        var offsetR = r * (0.6 + Math.random() * 0.7);
+        var px = x + offsetR * Math.cos(angle);
+        var py = y + offsetR * Math.sin(angle);
+        if (i === 0) c.moveTo(px, py);
+        else c.lineTo(px, py);
+      }
+      c.closePath();
+      c.fill();
+      c.strokeStyle = "#1e293b";
+      c.lineWidth = 1.5;
+      c.stroke();
+    }
+
+    function triggerAcidTest() {
+      var currentKey = (currentMode === "forward") ? resolveCraftedKey(playerRecipe) : mode2QuestionKey;
+      var rock = ROCKS[currentKey];
+      var evalBox = document.getElementById("eval-box");
+      evalBox.style.display = "block";
+
+      if (rock && rock.acidReaction) {
+        evalBox.className = "eval-feedback pass";
+        evalBox.innerHTML = "<b>🧪 滴 5% 稀鹽酸反應：</b> 接觸面<b>瞬間劇烈沸騰起泡，發出滋滋聲</b>！證實含有碳酸鈣 (CaCO₃)！";
+        if (ctx) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(200, 200, 196, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+          for (var b = 0; b < 60; b++) {
+            ctx.beginPath();
+            ctx.arc(100 + Math.random()*200, 100 + Math.random()*200, 4 + Math.random()*8, 0, Math.PI*2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      } else {
+        evalBox.className = "eval-feedback fail";
+        evalBox.innerHTML = "<b>🧪 滴 5% 稀鹽酸反應：</b> 液滴安靜平伏於表面，<b>未見任何氣泡析出</b>（非碳酸鹽岩）。";
+      }
+    }
+
+    function triggerScratchTest() {
+      var currentKey = (currentMode === "forward") ? resolveCraftedKey(playerRecipe) : mode2QuestionKey;
+      var rock = ROCKS[currentKey];
+      var evalBox = document.getElementById("eval-box");
+      evalBox.style.display = "block";
+
+      if (rock && rock.scratchReaction) {
+        evalBox.className = "eval-feedback pass";
+        evalBox.innerHTML = "<b>🖐️ 人類指甲刻劃測試：</b> 指甲在標本表面<b>輕易刮出清晰白痕與粉末</b>！證實硬度 ≤ 2 (極軟)！";
+      } else {
+        evalBox.className = "eval-feedback fail";
+        evalBox.innerHTML = "<b>🖐️ 人類指甲刻劃測試：</b> 指甲打滑，無法在表面留下痕跡（硬度 > 2.5）。";
+      }
+    }
+
+    // 初始啟動
+    initMode1Question();
+
+    // ★★★ 全域強韌點擊委派 ★★★
+    document.addEventListener("click", function(e) {
+      var target = e.target;
+      if (!target) return;
+
+      // 1. 模式切換：模式一
+      if (target.id === "btn-mode-forward" || target.closest("#btn-mode-forward")) {
+        currentMode = "forward";
+        document.getElementById("btn-mode-forward").classList.add("active");
+        document.getElementById("btn-mode-reverse").classList.remove("active");
+
+        document.getElementById("mode1-mission-box").style.display = "block";
+        document.getElementById("mode1-controls").style.display = "block";
+        document.getElementById("mode2-param-box").style.display = "none";
+        document.getElementById("mode2-choices").style.display = "none";
+        document.getElementById("btn-main-action").style.display = "flex";
+
+        initMode1Question();
+        return;
+      }
+
+      // 2. 模式切換：模式二
+      if (target.id === "btn-mode-reverse" || target.closest("#btn-mode-reverse")) {
+        currentMode = "reverse";
+        document.getElementById("btn-mode-reverse").classList.add("active");
+        document.getElementById("btn-mode-forward").classList.remove("active");
+
+        document.getElementById("mode1-mission-box").style.display = "none";
+        document.getElementById("mode1-controls").style.display = "none";
+        document.getElementById("mode2-param-box").style.display = "block";
+        document.getElementById("mode2-choices").style.display = "block";
+        document.getElementById("btn-main-action").style.display = "none";
+
+        initMode2Question();
+        return;
+      }
+
+      // 3. 模式一：壓實膠結成岩
+      if (target.id === "btn-main-action" || target.closest("#btn-main-action")) {
+        evaluateMode1();
+        return;
+      }
+
+      // 4. 抽取下一籤
+      if (target.id === "btn-next-question" || target.closest("#btn-next-question")) {
+        if (currentMode === "forward") {
+          initMode1Question();
+        } else {
+          initMode2Question();
+        }
+        return;
+      }
+
+      // 5. 模式二：點選候選岩石
+      var choiceBtn = target.closest(".btn-rock-choice");
+      if (choiceBtn && currentMode === "reverse") {
+        if (!hasAnswered) {
+          var guessedKey = choiceBtn.getAttribute("data-guess");
+          evaluateMode2(guessedKey, choiceBtn);
+        }
+        return;
+      }
+
+      // 6. 模式一配置：物質源
+      var sourceBtn = target.closest("[data-source]");
+      if (sourceBtn && currentMode === "forward" && !hasAnswered) {
+        var allSrc = document.querySelectorAll("[data-source]");
+        for (var i = 0; i < allSrc.length; i++) { allSrc[i].classList.remove("active"); }
+        sourceBtn.classList.add("active");
+        playerRecipe.source = sourceBtn.getAttribute("data-source");
+        return;
+      }
+
+      // 7. 模式一配置：動力環境
+      var envBtn = target.closest("[data-env]");
+      if (envBtn && currentMode === "forward" && !hasAnswered) {
+        var allEnv = document.querySelectorAll("[data-env]");
+        for (var j = 0; j < allEnv.length; j++) { allEnv[j].classList.remove("active"); }
+        envBtn.classList.add("active");
+        playerRecipe.env = envBtn.getAttribute("data-env");
+        return;
+      }
+
+      // 8. 試劑測試按鈕
+      if (target.id === "btn-acid" || target.closest("#btn-acid")) {
+        triggerAcidTest();
+        return;
+      }
+
+      if (target.id === "btn-scratch" || target.closest("#btn-scratch")) {
+        triggerScratchTest();
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
